@@ -6,7 +6,7 @@ const Accordion = theme => {
           '&.Mui-disabled': {
             backgroundColor: `rgba(${theme.palette.customColors.main}, 0.12)`
           },
-          '&.Mui-expanded': {
+          '&.Mui-expanded': {        
             boxShadow: theme.shadows[3]
           }
         }

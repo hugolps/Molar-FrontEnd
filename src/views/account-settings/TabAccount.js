@@ -31,7 +31,7 @@ const ImgStyled = styled('img')(({ theme }) => ({
 const ButtonStyled = styled(Button)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: '100%',
-    textAlign: 'center'
+    textAlign: 'center',
   }
 }))
 
@@ -88,18 +88,18 @@ const TabAccount = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Username' placeholder='johnDoe' defaultValue='johnDoe' />
+            <TextField fullWidth label='Username' placeholder='Username' defaultValue='' />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Name' placeholder='John Doe' defaultValue='John Doe' />
+            <TextField fullWidth label='Name' placeholder='Name' defaultValue='' />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type='email'
               label='Email'
-              placeholder='johnDoe@example.com'
-              defaultValue='johnDoe@example.com'
+              placeholder='Email'
+              defaultValue=''
             />
           </Grid>
           <Grid item xs={12} sm={6}>

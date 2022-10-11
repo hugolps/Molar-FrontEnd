@@ -1,6 +1,6 @@
 const themeConfig = {
   // ** Layout Configs
-  templateName: 'Molar' /* App Name */,
+  templateName: 'MolaR' /* App Name */,
   mode: 'light' /* light | dark */,
   contentWidth: 'boxed' /* full | boxed */,
   // ** Routing Configs

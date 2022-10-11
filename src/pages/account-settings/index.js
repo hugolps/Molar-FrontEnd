@@ -25,7 +25,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
-    minWidth: 100
+    minWidth: 100,    
   },
   [theme.breakpoints.down('sm')]: {
     minWidth: 67
@@ -60,9 +60,9 @@ const AccountSettings = () => {
           <Tab
             value='account'
             label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center'}}>
                 <AccountOutline />
-                <TabName>Account</TabName>
+                <TabName>Conta</TabName>
               </Box>
             }
           />
@@ -71,7 +71,7 @@ const AccountSettings = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <LockOpenOutline />
-                <TabName>Security</TabName>
+                <TabName>Senha</TabName>
               </Box>
             }
           />

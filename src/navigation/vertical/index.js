@@ -18,14 +18,14 @@ const navigation = () => {
       path: '/'
     },
     {
-      title: 'Configurações',
+      title: 'Usuário',
       icon: AccountCogOutline,
       path: '/account-settings'
     },
     {
       title: 'WishList',
       icon: CubeOutline,
-      path: '/wishlist'
+      path: '/form-layouts'
     },
     {
       title: 'Logout',
@@ -49,7 +49,7 @@ const navigation = () => {
       path: '/pages/error',
       openInNewTab: true
     },
-    
+
     // {
     //   sectionTitle: 'User Interface'
     // },
