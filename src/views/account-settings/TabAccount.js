@@ -31,7 +31,7 @@ const ImgStyled = styled('img')(({ theme }) => ({
 const ButtonStyled = styled(Button)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: '100%',
-    textAlign: 'center',
+    textAlign: 'center'
   }
 }))
 
@@ -45,10 +45,14 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
   }
 }))
 
+//\(?([0-9]{2,3}|0{1}((x|[0-9]){2,3}[0-9]{2}))\)?\s*[0-9]{4,5}[- ]*[0-9]{4}
+const isNumber = (str) => /^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$/.test(str)
+
 const TabAccount = () => {
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
+  const [validNumber, setValidNumber] = useState('')
 
   const onChange = file => {
     const reader = new FileReader()
@@ -59,11 +63,27 @@ const TabAccount = () => {
     }
   }
 
+  function onlynumber(evt) {
+    var theEvent = evt || window.event
+    var key = theEvent.keyCode || theEvent.which
+    key = String.fromCharCode(key)
+    var regex = /^[0-9.]+$/
+    if (!regex.test(key)) {
+      theEvent.returnValue = false
+      if (theEvent.preventDefault) theEvent.preventDefault()
+    }
+  }
+
+  const handleValidNumber = event => {
+    const result = toString(event.target.value).replace(/[^\d]/g, '')
+    setValidNumber(result)
+  }
+
   return (
     <CardContent>
       <form>
         <Grid container spacing={7}>
-          <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
+          {/* <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <ImgStyled src={imgSrc} alt='Profile Pic' />
               <Box>
@@ -85,24 +105,52 @@ const TabAccount = () => {
                 </Typography>
               </Box>
             </Box>
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Username' placeholder='Username' defaultValue='' />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Name' placeholder='Name' defaultValue='' />
+            <TextField fullWidth label='Nome Completo' placeholder='Nome Completo' defaultValue='' required />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              type='email'
-              label='Email'
-              placeholder='Email'
-              defaultValue=''
+              type='text'
+              validate={isNumber}
+              onChange={() => onlynumber}
+              label='Phone Number'
+              placeholder='(XX) XXXXX-XXXX'
+              value={validNumber}
+              required
+
+              //defaultValue=""
             />
           </Grid>
           <Grid item xs={12} sm={6}>
+            <TextField fullWidth type='email' label='Email' placeholder='Email' defaultValue='' required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField fullWidth type='text' label='Logradouro' placeholder='Logradouro' defaultValue='' required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField fullWidth type='text' label='Bairro' placeholder='Bairro' defaultValue='' required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type='text'
+              label='Número da Residência'
+              placeholder='Número da Residência'
+              defaultValue=''
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField fullWidth type='text' label='CEP' placeholder='CEP' defaultValue='' required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+              <TextField fullWidth type='text' label='CPF' placeholder='CPF' defaultValue='' required disabled/>
+          </Grid>
+
+          {/* <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Role</InputLabel>
               <Select label='Role' defaultValue='admin'>
@@ -113,8 +161,8 @@ const TabAccount = () => {
                 <MenuItem value='subscriber'>Subscriber</MenuItem>
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid> */}
+          {/* <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Status</InputLabel>
               <Select label='Status' defaultValue='active'>
@@ -123,12 +171,12 @@ const TabAccount = () => {
                 <MenuItem value='pending'>Pending</MenuItem>
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid> */}
+          {/* <Grid item xs={12} sm={6}>
             <TextField fullWidth label='Company' placeholder='ABC Pvt. Ltd.' defaultValue='ABC Pvt. Ltd.' />
-          </Grid>
+          </Grid> */}
 
-          {openAlert ? (
+          {/* {openAlert ? (
             <Grid item xs={12} sx={{ mb: 3 }}>
               <Alert
                 severity='warning'
@@ -145,15 +193,23 @@ const TabAccount = () => {
                 </Link>
               </Alert>
             </Grid>
-          ) : null}
+          ) : null} */}
 
-          <Grid item xs={12}>
-            <Button variant='contained' sx={{ marginRight: 3.5 }}>
-              Save Changes
-            </Button>
-            <Button type='reset' variant='outlined' color='secondary'>
-              Reset
-            </Button>
+          <Grid item xs={12} spacing={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box>
+              <Button variant='contained' sx={{ marginRight: 3.5 }}>
+                Salvar Alterações
+              </Button>
+              <Button type='cancel' variant='outlined' color='error'>
+                Cancelar
+              </Button>
+            </Box>
+
+            <Box>
+              <Button variant='contained' color='error'>
+                Deletar Conta
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </form>

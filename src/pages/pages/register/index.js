@@ -6,6 +6,7 @@ import Link from 'next/link'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Checkbox from '@mui/material/Checkbox'
@@ -159,84 +160,105 @@ const RegisterPage = () => {
           </Box>
           <Box sx={{ mb: 6 }}>
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
-              Adventure starts here 🚀
+              Sinta-se em casa!
             </Typography>
-            <Typography variant='body2'>Make your app management easy and fun!</Typography>
+            <Typography variant='body2'>Cadastre-se para encontrar os melhores imóveis!</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} />
-            <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} />
-            <FormControl fullWidth>
-              <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
-              <OutlinedInput
-                label='Password'
-                value={values.password}
-                id='auth-register-password'
-                onChange={handleChange('password')}
-                type={values.showPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      edge='end'
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      aria-label='toggle password visibility'
-                    >
-                      {values.showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
-                    </IconButton>
-                  </InputAdornment>
+            <Grid container spacing={7}>
+              <Grid item xs={12} sm={12}>
+                <TextField fullWidth label='Nome Completo' placeholder='Nome Completo' defaultValue='' required />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <TextField fullWidth type='email' label='Email' placeholder='Email' defaultValue='' required />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
+                  <OutlinedInput
+                    label='Password'
+                    value={values.password}
+                    id='auth-register-password'
+                    onChange={handleChange('password')}
+                    type={values.showPassword ? 'text' : 'password'}
+                    endAdornment={
+                      <InputAdornment position='end'>
+                        <IconButton
+                          edge='end'
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          aria-label='toggle password visibility'
+                        >
+                          {values.showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  fullWidth
+                  type='text'
+                  // validate={isNumber}
+                  onChange={() => onlynumber}
+                  label='Phone Number'
+                  placeholder='(XX) XXXXX-XXXX'
+                  // value={validNumber}
+                  required
+
+                  //defaultValue=""
+                />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <TextField fullWidth type='text' label='Logradouro' placeholder='Logradouro' defaultValue='' required />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField fullWidth type='text' label='Bairro' placeholder='Bairro' defaultValue='' required />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField fullWidth type='text' label='Número' placeholder='Número' defaultValue='' required />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField fullWidth type='text' label='CEP' placeholder='CEP' defaultValue='' required />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField fullWidth type='text' label='CPF' placeholder='CPF' defaultValue='' required />
+              </Grid>
+
+              {/* <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} /> */}
+              {/* <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} /> */}
+              <Grid item xs={12} sm={12}>
+              <FormControlLabel
+                control={<Checkbox />}
+                label={
+                  <Fragment>
+                    <span>Eu concordo com </span>
+                    <Link href='/' passHref>
+                      <LinkStyled onClick={e => e.preventDefault()}>as políticas & termos de privacidade</LinkStyled>
+                    </Link>
+                  </Fragment>
                 }
               />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox />}
-              label={
-                <Fragment>
-                  <span>I agree to </span>
-                  <Link href='/' passHref>
-                    <LinkStyled onClick={e => e.preventDefault()}>privacy policy & terms</LinkStyled>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+              <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
+                Sign up
+              </Button>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+              <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <Typography variant='body2' sx={{ marginRight: 2 }}>
+                  Já tem conta?
+                </Typography>
+                <Typography variant='body2'>
+                  <Link passHref href='/pages/login'>
+                    <LinkStyled>Então faça o login aqui</LinkStyled>
                   </Link>
-                </Fragment>
-              }
-            />
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
-              Sign up
-            </Button>
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Typography variant='body2' sx={{ marginRight: 2 }}>
-                Already have an account?
-              </Typography>
-              <Typography variant='body2'>
-                <Link passHref href='/pages/login'>
-                  <LinkStyled>Sign in instead</LinkStyled>
-                </Link>
-              </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Facebook sx={{ color: '#497ce2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Twitter sx={{ color: '#1da1f2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Github
-                    sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
-                  />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
-            </Box>
+                </Typography>
+              </Box>
+              </Grid>
+            </Grid>
           </form>
         </CardContent>
       </Card>
