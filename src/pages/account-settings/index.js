@@ -25,7 +25,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
-    minWidth: 100,    
+    minWidth: 100,
   },
   [theme.breakpoints.down('sm')]: {
     minWidth: 67
@@ -45,11 +45,31 @@ const AccountSettings = () => {
   // ** State
   const [value, setValue] = useState('account')
 
-  
+  useEffect(() => {
+      const teste = fetch(`http://localhost:3000/api/v1/usuarios/${usuarioId}`, {
+    headers: {
+      "Accept": "application/json",
+      // "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxOSIsInNjcCI6InVzdWFyaW8iLCJhdWQiOm51bGwsImlhdCI6MTY2NjExNDk4MSwiZXhwIjoxNjY3NDEwOTgxLCJqdGkiOiJmZTQzZjgyNS1mMWM4LTRmZmUtYmQxYi1iZTg1MjE5NWI1MGIifQ.kvxSvASaYtlD35Z6Wlw_D1oLw54y4zz65-8GW3rBwDw"
+    },
+  })
+   .then(response => response.json())
+   .then(data => console.log(data))
+  })
+
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  // const teste = fetch("http://localhost:3000/api/v1/usuarios/19", {
+  //   headers: {
+  //     "Accept": "application/json",
+  //     // "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxOSIsInNjcCI6InVzdWFyaW8iLCJhdWQiOm51bGwsImlhdCI6MTY2NjExNDk4MSwiZXhwIjoxNjY3NDEwOTgxLCJqdGkiOiJmZTQzZjgyNS1mMWM4LTRmZmUtYmQxYi1iZTg1MjE5NWI1MGIifQ.kvxSvASaYtlD35Z6Wlw_D1oLw54y4zz65-8GW3rBwDw"
+  //   },
+  // })
+  //  .then(response => response.json())
+  //  .then(data => console.log(data))
 
   return (
     <Card>

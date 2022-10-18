@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -60,9 +60,28 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const LoginPage = () => {
   // ** State
   const [values, setValues] = useState({
+    email: '',
     password: '',
     showPassword: false
   })
+
+  // const [usuario, setUsuario] = useState({
+  //   email: '',
+  //   password: ''
+  // })
+
+  useEffect(() => {
+    const teste = fetch(`http://localhost:3000/usuarios/sign_in`, {
+      method: 'POST',
+      headers: {
+        "Accept": "application/json",
+        // "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxOSIsInNjcCI6InVzdWFyaW8iLCJhdWQiOm51bGwsImlhdCI6MTY2NjExNDk4MSwiZXhwIjoxNjY3NDEwOTgxLCJqdGkiOiJmZTQzZjgyNS1mMWM4LTRmZmUtYmQxYi1iZTg1MjE5NWI1MGIifQ.kvxSvASaYtlD35Z6Wlw_D1oLw54y4zz65-8GW3rBwDw"
+      },
+      body: JSON.stringify()
+  })
+    .then(response => response.json())
+    .then(data => console.log(data))
+  }, [])
 
   // ** Hook
   const theme = useTheme()
@@ -70,6 +89,13 @@ const LoginPage = () => {
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
+  }
+
+  const handleLogin = event => {
+    event.preventDefault()
+    console.log("cu")
+    // setUsuario({ })
+    // router.push('/')
   }
 
   const handleClickShowPassword = () => {
@@ -163,8 +189,8 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'></Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} />
+          <form noValidate autoComplete='off' onSubmit={e => handleLogin()}>
+            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -200,7 +226,8 @@ const LoginPage = () => {
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
+              onClick={e => handleLogin(e)}
+              // onSubmit={() => handleLogin()}
             >
               Login
             </Button>
