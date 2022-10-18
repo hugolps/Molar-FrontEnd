@@ -170,6 +170,9 @@ const RegisterPage = () => {
                 <TextField fullWidth label='Nome Completo' placeholder='Nome Completo' defaultValue='' required />
               </Grid>
               <Grid item xs={12} sm={12}>
+                <TextField fullWidth label='Username' placeholder='Username' defaultValue='' required />
+              </Grid>
+              <Grid item xs={12} sm={12}>
                 <TextField fullWidth type='email' label='Email' placeholder='Email' defaultValue='' required />
               </Grid>
               <Grid item xs={12} sm={12}>
@@ -200,10 +203,12 @@ const RegisterPage = () => {
                 <TextField
                   fullWidth
                   type='text'
+                  
                   // validate={isNumber}
                   onChange={() => onlynumber}
                   label='Phone Number'
                   placeholder='(XX) XXXXX-XXXX'
+                  
                   // value={validNumber}
                   required
 
@@ -229,34 +234,34 @@ const RegisterPage = () => {
               {/* <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} /> */}
               {/* <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} /> */}
               <Grid item xs={12} sm={12}>
-              <FormControlLabel
-                control={<Checkbox />}
-                label={
-                  <Fragment>
-                    <span>Eu concordo com </span>
-                    <Link href='/' passHref>
-                      <LinkStyled onClick={e => e.preventDefault()}>as políticas & termos de privacidade</LinkStyled>
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label={
+                    <Fragment>
+                      <span>Eu concordo com </span>
+                      <Link href='/' passHref>
+                        <LinkStyled onClick={e => e.preventDefault()}>as políticas & termos de privacidade</LinkStyled>
+                      </Link>
+                    </Fragment>
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
+                  Sign up
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+                  <Typography variant='body2' sx={{ marginRight: 2 }}>
+                    Já tem conta?
+                  </Typography>
+                  <Typography variant='body2'>
+                    <Link passHref href='/pages/login'>
+                      <LinkStyled>Então faça o login aqui</LinkStyled>
                     </Link>
-                  </Fragment>
-                }
-              />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-              <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
-                Sign up
-              </Button>
-              </Grid>
-              <Grid item xs={12} sm={12}>
-              <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Typography variant='body2' sx={{ marginRight: 2 }}>
-                  Já tem conta?
-                </Typography>
-                <Typography variant='body2'>
-                  <Link passHref href='/pages/login'>
-                    <LinkStyled>Então faça o login aqui</LinkStyled>
-                  </Link>
-                </Typography>
-              </Box>
+                  </Typography>
+                </Box>
               </Grid>
             </Grid>
           </form>

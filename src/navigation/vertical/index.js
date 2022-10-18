@@ -22,62 +22,64 @@ const navigation = () => {
       icon: AccountCogOutline,
       path: '/account-settings'
     },
+    
+    // {
+    //   title: 'WishList',
+    //   icon: CubeOutline,
+    //   path: '/form-layouts'
+    // },
     {
-      title: 'WishList',
-      icon: CubeOutline,
-      path: '/form-layouts'
-    },
-    {
-      title: 'Logout',
+      title: 'Login',
       icon: Login,
       path: '/pages/login',
       openInNewTab: true
     },
-    {
-      sectionTitle: 'Pages'
-    },
-
-    {
-      title: 'Register',
-      icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
-    },
-    {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
-    },
 
     // {
-    //   sectionTitle: 'User Interface'
+    //   sectionTitle: 'Pages'
     // },
-    {
-      title: 'Typography',
-      icon: FormatLetterCase,
-      path: '/typography'
-    },
-    {
-      title: 'Icons',
-      icon: GoogleCirclesExtended,
-      path: '/icons'
-    },
-    {
-      title: 'Cards',
-      icon: CreditCardOutline,
-      path: '/cards'
-    },
-    {
-      title: 'Tables',
-      icon: Table,
-      path: '/tables'
-    },
-    {
-      title: 'Form Layouts',
-      icon: CubeOutline,
-      path: '/form-layouts'
-    }
+
+    // {
+    //   title: 'Register',
+    //   icon: AccountPlusOutline,
+    //   path: '/pages/register',
+    //   openInNewTab: true
+    // },
+    // {
+    //   title: 'Error',
+    //   icon: AlertCircleOutline,
+    //   path: '/pages/error',
+    //   openInNewTab: true
+    // },
+
+    // // {
+    // //   sectionTitle: 'User Interface'
+    // // },
+    // {
+    //   title: 'Typography',
+    //   icon: FormatLetterCase,
+    //   path: '/typography'
+    // },
+    // {
+    //   title: 'Icons',
+    //   icon: GoogleCirclesExtended,
+    //   path: '/icons'
+    // },
+    // {
+    //   title: 'Cards',
+    //   icon: CreditCardOutline,
+    //   path: '/cards'
+    // },
+    // {
+    //   title: 'Tables',
+    //   icon: Table,
+    //   path: '/tables'
+    // },
+    // {
+    //   title: 'Form Layouts',
+    //   icon: CubeOutline,
+    //   path: '/form-layouts'
+    // }
   ]
 }
 
