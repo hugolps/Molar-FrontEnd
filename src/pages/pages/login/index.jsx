@@ -1,5 +1,6 @@
 // ** React Imports
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import StoreContext from '../../../Store/Context'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -57,7 +58,49 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
+function InitialState() {
+  return {email: '', password: ''}
+}
+
+function login({email, password}) {
+
+  const user = {
+    "email": email,
+    "password": password
+  }
+
+  fetch(`http://0.0.0.0:3000/usuarios/sign_in`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Origin": "*"
+    },
+    body: JSON.stringify(user)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+
+  //  if (email === 'admin' && password === 'admin') {
+  //   return { token: 1234 }
+  //  }
+
+  //  return 'Usuário ou senha inválido'
+}
+
+const UserLogin = () => {
+  const [values, setValues] = useState(InitialState)
+  const { setToken } = useContext(StoreContext)
+}
+
 const LoginPage = () => {
+  const { user, setUser } = useState({})
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  console.log(user)
+
+
+
   // ** State
   const [values, setValues] = useState({
     email: '',
@@ -65,23 +108,23 @@ const LoginPage = () => {
     showPassword: false
   })
 
-  // const [usuario, setUsuario] = useState({
-  //   email: '',
-  //   password: ''
-  // })
+  function onChange(event) {
+    const { value, name } = event.target;
+    setValues([
+      ...values, 
+      [name] = value
+    ])
+  }
 
-  useEffect(() => {
-    const teste = fetch(`http://localhost:3000/usuarios/sign_in`, {
-      method: 'POST',
-      headers: {
-        "Accept": "application/json",
-        // "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxOSIsInNjcCI6InVzdWFyaW8iLCJhdWQiOm51bGwsImlhdCI6MTY2NjExNDk4MSwiZXhwIjoxNjY3NDEwOTgxLCJqdGkiOiJmZTQzZjgyNS1mMWM4LTRmZmUtYmQxYi1iZTg1MjE5NWI1MGIifQ.kvxSvASaYtlD35Z6Wlw_D1oLw54y4zz65-8GW3rBwDw"
-      },
-      body: JSON.stringify()
-  })
-    .then(response => response.json())
-    .then(data => console.log(data))
-  }, [])
+  function onSubmit(event) {
+    event.preventDefault()
+
+    const { token } = login(values)
+
+    if (token) {
+
+    }
+  }
 
   // ** Hook
   const theme = useTheme()
@@ -89,13 +132,6 @@ const LoginPage = () => {
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
-  }
-
-  const handleLogin = event => {
-    event.preventDefault()
-    console.log("cu")
-    // setUsuario({ })
-    // router.push('/')
   }
 
   const handleClickShowPassword = () => {
@@ -189,15 +225,24 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'></Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => handleLogin()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+          <form noValidate autoComplete='off' onSubmit={onSubmit}>
+            <TextField 
+              autoFocus
+              name='email'
+              onChange={onChange} 
+              fullWidth id='email' 
+              label='Email' 
+              sx={{ marginBottom: 4 }} 
+              value={values.email}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
                 value={values.password}
+                name='password'
                 id='auth-login-password'
-                onChange={handleChange('password')}
+                onChange={onChange}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position='end'>
@@ -226,7 +271,8 @@ const LoginPage = () => {
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={e => handleLogin(e)}
+              disable={email === false || password === false}
+
               // onSubmit={() => handleLogin()}
             >
               Login
