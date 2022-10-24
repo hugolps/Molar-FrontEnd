@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -65,45 +65,42 @@ const LoginPage = () => {
     showPassword: false
   })
 
-  const [usuario, setUsuario] = useState({
-    email: '',
-    password: ''
-  })
-
-  useEffect(() => {
-    const teste = fetch(`http://localhost:3000/usuarios/sign_in`, {
-      method: 'POST',
-      headers: {
-        "Accept": "application/json",
-        // "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxOSIsInNjcCI6InVzdWFyaW8iLCJhdWQiOm51bGwsImlhdCI6MTY2NjExNDk4MSwiZXhwIjoxNjY3NDEwOTgxLCJqdGkiOiJmZTQzZjgyNS1mMWM4LTRmZmUtYmQxYi1iZTg1MjE5NWI1MGIifQ.kvxSvASaYtlD35Z6Wlw_D1oLw54y4zz65-8GW3rBwDw"
-      },
-      body: JSON.stringify()
-  })
-    .then(response => response.json())
-    .then(data => console.log(data))
-  }, [])
-
   // ** Hook
   const theme = useTheme()
   const router = useRouter()
 
-  // const handleChange = prop => event => {
-  //   setValues({ ...values, [prop]: event.target.value })
-  // }
+  const handleLogin = () => {
+    event.preventDefault()
 
-  const handlePasswordChange = prop => event => {
+    const user = {
+      usuario: {
+        email: values.email,
+        password: values.password
+      }
+    }
+    console.log(user)
+
+    // fetch('http://0.0.0.0:3000/api/v1/usuarios')
+    // .then(response => response.json())
+    // .then(data => console.log(data))
+
+    fetch(`http://0.0.0.0:3000/usuarios/sign_in`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+      .then(response => response.json())
+      .then(data => console.log("Reposta: ", data))
+  }
+
+  const handleChange = prop => event => {
+    // console.log(values)
     setValues({ ...values, [prop]: event.target.value })
   }
 
-  const handleEmailChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
-
-  const handleLogin = event => {
-    // event.preventDefault()
-    setUsuario({ })
-    // router.push('/')
-  }
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword })
@@ -194,18 +191,18 @@ const LoginPage = () => {
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Bem-vindo(a) ao {themeConfig.templateName}!
             </Typography>
-            <Typography variant='body2'></Typography>
+            <Typography variant='body2'>Entre agora para encontrar os melhores imóveis</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => handleLogin()}>
+          <form noValidate autoComplete='off' onSubmit={() => router.push('/')}>
             <TextField
               autoFocus
               fullWidth
-              id='email'
+              id='auth-login-email'
               label='Email'
-              sx={{ marginBottom: 4 }}
               value={values.email}
-              onChange={handleEmailChange('email')}
-              />
+              onChange={handleChange('email')}
+              sx={{ marginBottom: 4 }}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Senha</InputLabel>
               <OutlinedInput
@@ -231,31 +228,14 @@ const LoginPage = () => {
             <Box
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
-              <FormControlLabel control={<Checkbox />} label='Continuar logado' />
+              <FormControlLabel control={<Checkbox />} label='Lembrar' />
               <Link passHref href='/'>
-                <LinkStyled onClick={e => e.preventDefault()}>Esqueceu sua senha?</LinkStyled>
+                <LinkStyled onClick={e => e.preventDefault()}>Esqueceu a senha?</LinkStyled>
               </Link>
             </Box>
-            <Button
-              fullWidth
-              size='large'
-              variant='contained'
-              sx={{ marginBottom: 7 }}
-              onClick={e => handleLogin(e)}
-              // onSubmit={() => handleLogin()}
-            >
-              Login
+            <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} onClick={handleLogin}>
+              ENTRAR
             </Button>
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Typography variant='body2' sx={{ marginRight: 2 }}>
-                Primeiro acesso?
-              </Typography>
-              <Typography variant='body2'>
-                <Link passHref href='/pages/register'>
-                  <LinkStyled>Crie sua conta aqui!</LinkStyled>
-                </Link>
-              </Typography>
-            </Box>
           </form>
         </CardContent>
       </Card>

@@ -10,7 +10,7 @@ import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
-const navigation = () => {
+export const navigation = () => {
   return [
     {
       title: 'Principal',
@@ -22,7 +22,7 @@ const navigation = () => {
       icon: AccountCogOutline,
       path: '/account-settings'
     },
-    
+
     // {
     //   title: 'WishList',
     //   icon: CubeOutline,
@@ -33,7 +33,7 @@ const navigation = () => {
       icon: Login,
       path: '/pages/login',
       openInNewTab: true
-    },
+    }
 
     // {
     //   sectionTitle: 'Pages'
