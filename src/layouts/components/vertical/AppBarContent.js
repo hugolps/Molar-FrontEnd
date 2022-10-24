@@ -11,8 +11,8 @@ import Magnify from 'mdi-material-ui/Magnify'
 
 // ** Components
 import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
-import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
-import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
+// import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
+// import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
 
 const AppBarContent = props => {
   // ** Props
@@ -62,8 +62,8 @@ const AppBarContent = props => {
           </Box>
         )} */}
         <ModeToggler settings={settings} saveSettings={saveSettings} />
-        <NotificationDropdown />
-        <UserDropdown />
+        {/* <NotificationDropdown /> */}
+        {/* <UserDropdown /> */}
       </Box>
     </Box>
   )

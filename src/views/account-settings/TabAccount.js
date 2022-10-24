@@ -116,7 +116,7 @@ const TabAccount = () => {
               type='text'
               validate={isNumber}
               onChange={() => onlynumber}
-              label='Phone Number'
+              label='Telefone'
               placeholder='(XX) XXXXX-XXXX'
               value={validNumber}
               required
@@ -207,7 +207,7 @@ const TabAccount = () => {
 
             <Box>
               <Button variant='contained' color='error'>
-                Deletar Conta
+                Excluir Conta
               </Button>
             </Box>
           </Grid>

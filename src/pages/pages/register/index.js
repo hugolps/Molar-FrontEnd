@@ -169,15 +169,15 @@ const RegisterPage = () => {
               <Grid item xs={12} sm={12}>
                 <TextField fullWidth label='Nome Completo' placeholder='Nome Completo' defaultValue='' required />
               </Grid>
-              <Grid item xs={12} sm={12}>
+              {/* <Grid item xs={12} sm={12}>
                 <TextField fullWidth label='Username' placeholder='Username' defaultValue='' required />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} sm={12}>
                 <TextField fullWidth type='email' label='Email' placeholder='Email' defaultValue='' required />
               </Grid>
               <Grid item xs={12} sm={12}>
                 <FormControl fullWidth>
-                  <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
+                  <InputLabel htmlFor='auth-register-password'>Senha</InputLabel>
                   <OutlinedInput
                     label='Password'
                     value={values.password}
@@ -203,12 +203,12 @@ const RegisterPage = () => {
                 <TextField
                   fullWidth
                   type='text'
-                  
+
                   // validate={isNumber}
                   onChange={() => onlynumber}
-                  label='Phone Number'
+                  label='Telefone'
                   placeholder='(XX) XXXXX-XXXX'
-                  
+
                   // value={validNumber}
                   required
 
@@ -248,7 +248,7 @@ const RegisterPage = () => {
               </Grid>
               <Grid item xs={12} sm={12}>
                 <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
-                  Sign up
+                  Cadastrar
                 </Button>
               </Grid>
               <Grid item xs={12} sm={12}>

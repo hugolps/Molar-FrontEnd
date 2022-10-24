@@ -65,10 +65,10 @@ const LoginPage = () => {
     showPassword: false
   })
 
-  // const [usuario, setUsuario] = useState({
-  //   email: '',
-  //   password: ''
-  // })
+  const [usuario, setUsuario] = useState({
+    email: '',
+    password: ''
+  })
 
   useEffect(() => {
     const teste = fetch(`http://localhost:3000/usuarios/sign_in`, {
@@ -87,14 +87,21 @@ const LoginPage = () => {
   const theme = useTheme()
   const router = useRouter()
 
-  const handleChange = prop => event => {
+  // const handleChange = prop => event => {
+  //   setValues({ ...values, [prop]: event.target.value })
+  // }
+
+  const handlePasswordChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
+
+  const handleEmailChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
 
   const handleLogin = event => {
-    event.preventDefault()
-    console.log("cu")
-    // setUsuario({ })
+    // event.preventDefault()
+    setUsuario({ })
     // router.push('/')
   }
 
@@ -190,14 +197,22 @@ const LoginPage = () => {
             <Typography variant='body2'></Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => handleLogin()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField
+              autoFocus
+              fullWidth
+              id='email'
+              label='Email'
+              sx={{ marginBottom: 4 }}
+              value={values.email}
+              onChange={handleEmailChange('email')}
+              />
             <FormControl fullWidth>
-              <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
+              <InputLabel htmlFor='auth-login-password'>Senha</InputLabel>
               <OutlinedInput
                 label='Password'
                 value={values.password}
                 id='auth-login-password'
-                onChange={handleChange('password')}
+                onChange={handlePasswordChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position='end'>
@@ -216,9 +231,9 @@ const LoginPage = () => {
             <Box
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
-              <FormControlLabel control={<Checkbox />} label='Remember Me' />
+              <FormControlLabel control={<Checkbox />} label='Continuar logado' />
               <Link passHref href='/'>
-                <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
+                <LinkStyled onClick={e => e.preventDefault()}>Esqueceu sua senha?</LinkStyled>
               </Link>
             </Box>
             <Button
