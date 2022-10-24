@@ -10,14 +10,8 @@ import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
-import StoreContext from '../../Store/Context'
-import React, { useContext } from 'react'
-
-const Navigation = () => {
-
-  const { token } = useContext(StoreContext)
-
-  return (token ? [
+export const navigation = () => {
+  return [
     {
       title: 'Principal',
       icon: HomeOutline,
@@ -28,7 +22,7 @@ const Navigation = () => {
       icon: AccountCogOutline,
       path: '/account-settings'
     },
-    
+
     // {
     //   title: 'WishList',
     //   icon: CubeOutline,
@@ -39,7 +33,7 @@ const Navigation = () => {
       icon: Login,
       path: '/pages/login',
       openInNewTab: true
-    },
+    }
 
     // {
     //   sectionTitle: 'Pages'
@@ -86,7 +80,7 @@ const Navigation = () => {
     //   icon: CubeOutline,
     //   path: '/form-layouts'
     // }
-  ] : null)
+  ]
 }
 
-export default Navigation
+export default navigation

@@ -1,6 +1,5 @@
 // ** React Imports
-import React, { useState, useEffect } from 'react'
-import StoreContext from '../../../Store/Context'
+import { useState } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -58,49 +57,7 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
-function InitialState() {
-  return {email: '', password: ''}
-}
-
-function login({email, password}) {
-
-  const user = {
-    "email": email,
-    "password": password
-  }
-
-  fetch(`http://0.0.0.0:3000/usuarios/sign_in`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Origin": "*"
-    },
-    body: JSON.stringify(user)
-  })
-  .then(response => response.json())
-  .then(data => console.log(data))
-
-  //  if (email === 'admin' && password === 'admin') {
-  //   return { token: 1234 }
-  //  }
-
-  //  return 'Usuário ou senha inválido'
-}
-
-const UserLogin = () => {
-  const [values, setValues] = useState(InitialState)
-  const { setToken } = useContext(StoreContext)
-}
-
 const LoginPage = () => {
-  const { user, setUser } = useState({})
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-
-  console.log(user)
-
-
-
   // ** State
   const [values, setValues] = useState({
     email: '',
@@ -108,29 +65,39 @@ const LoginPage = () => {
     showPassword: false
   })
 
-  function onChange(event) {
-    const { value, name } = event.target;
-    setValues([
-      ...values, 
-      [name] = value
-    ])
-  }
-
-  function onSubmit(event) {
-    event.preventDefault()
-
-    const { token } = login(values)
-
-    if (token) {
-
-    }
-  }
-
   // ** Hook
   const theme = useTheme()
   const router = useRouter()
 
+  const handleLogin = () => {
+    event.preventDefault()
+
+    const user = {
+      usuario: {
+        email: values.email,
+        password: values.password
+      }
+    }
+    console.log(user)
+
+    // fetch('http://0.0.0.0:3000/api/v1/usuarios')
+    // .then(response => response.json())
+    // .then(data => console.log(data))
+
+    fetch(`http://0.0.0.0:3000/usuarios/sign_in`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+      .then(response => response.json())
+      .then(data => console.log("Reposta: ", data))
+  }
+
   const handleChange = prop => event => {
+    // console.log(values)
     setValues({ ...values, [prop]: event.target.value })
   }
 
@@ -223,26 +190,25 @@ const LoginPage = () => {
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Bem-vindo(a) ao {themeConfig.templateName}!
             </Typography>
-            <Typography variant='body2'></Typography>
+            <Typography variant='body2'>Entre agora para encontrar os melhores imóveis</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={onSubmit}>
-            <TextField 
+          <form noValidate autoComplete='off' onSubmit={() => router.push('/')}>
+            <TextField
               autoFocus
-              name='email'
-              onChange={onChange} 
-              fullWidth id='email' 
-              label='Email' 
-              sx={{ marginBottom: 4 }} 
+              fullWidth
+              id='auth-login-email'
+              label='Email'
               value={values.email}
+              onChange={handleChange('email')}
+              sx={{ marginBottom: 4 }}
             />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
                 value={values.password}
-                name='password'
                 id='auth-login-password'
-                onChange={onChange}
+                onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position='end'>
@@ -261,32 +227,14 @@ const LoginPage = () => {
             <Box
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
-              <FormControlLabel control={<Checkbox />} label='Remember Me' />
+              <FormControlLabel control={<Checkbox />} label='Lembrar' />
               <Link passHref href='/'>
-                <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
+                <LinkStyled onClick={e => e.preventDefault()}>Esqueceu a senha?</LinkStyled>
               </Link>
             </Box>
-            <Button
-              fullWidth
-              size='large'
-              variant='contained'
-              sx={{ marginBottom: 7 }}
-              disable={email === false || password === false}
-
-              // onSubmit={() => handleLogin()}
-            >
-              Login
+            <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} onClick={handleLogin}>
+              ENTRAR
             </Button>
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Typography variant='body2' sx={{ marginRight: 2 }}>
-                Primeiro acesso?
-              </Typography>
-              <Typography variant='body2'>
-                <Link passHref href='/pages/register'>
-                  <LinkStyled>Crie sua conta aqui!</LinkStyled>
-                </Link>
-              </Typography>
-            </Box>
           </form>
         </CardContent>
       </Card>

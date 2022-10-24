@@ -53,7 +53,7 @@ const App = props => {
 
   return (
     <CacheProvider value={emotionCache}>
-      <StoreProvider>
+      {/* <StoreProvider> */}
       {/* <AuthProvider> */}
         <Head>
           <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
@@ -72,7 +72,7 @@ const App = props => {
           </SettingsConsumer>
         </SettingsProvider>
       {/* </AuthProvider> */}
-      </StoreProvider>
+      {/* </StoreProvider> */}
     </CacheProvider>
   )
 }
