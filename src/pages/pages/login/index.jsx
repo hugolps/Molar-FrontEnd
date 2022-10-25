@@ -101,7 +101,6 @@ const LoginPage = () => {
     setValues({ ...values, [prop]: event.target.value })
   }
 
-
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword })
   }
@@ -204,12 +203,12 @@ const LoginPage = () => {
               sx={{ marginBottom: 4 }}
             />
             <FormControl fullWidth>
-              <InputLabel htmlFor='auth-login-password'>Senha</InputLabel>
+              <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
                 value={values.password}
                 id='auth-login-password'
-                onChange={handlePasswordChange('password')}
+                onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position='end'>
@@ -237,6 +236,16 @@ const LoginPage = () => {
               ENTRAR
             </Button>
           </form>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <Typography variant='body2' sx={{ marginRight: 2 }}>
+                Primeiro acesso?
+              </Typography>
+              <Typography variant='body2'>
+                <Link passHref href='/pages/register'>
+                  <LinkStyled>Crie uma conta!</LinkStyled>
+                </Link>
+              </Typography>
+          </Box>
         </CardContent>
       </Card>
       <FooterIllustrationsV1 />
