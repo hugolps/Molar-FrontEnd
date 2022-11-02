@@ -1,6 +1,7 @@
 // ** React Imports
 import { useState, Fragment, useEffect, useContext } from 'react'
 import { AuthContext } from 'src/contexts/AuthContext'
+import {isFormValid, onlyNumbers, validate} from 'src/validation/index.js'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -24,10 +25,6 @@ import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 
 // ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
@@ -74,10 +71,10 @@ const RegisterPage = () => {
     cpf: '',
     showPassword: false,
   })
-  const [errors, setErrors] = useState({})
   const [validated, setValidated] = useState(false)
   const [checked, setChecked] = useState(false)
-
+  
+  const {errors, setErrors} = useContext(AuthContext)
   const {userInfo, setUserInfo} = useContext(AuthContext)
 
 
@@ -128,84 +125,23 @@ const RegisterPage = () => {
           response.json()
           }
         })
-      .then(data => setUserInfo(registerValues))
+      .then(setUserInfo(registerValues))
       .catch((error) => {
         console.log('Algo deu errado!', error)
       })      
   }
 
-  const onlyNumbers = (text) => {
-    const numbers = text.replace(/[^\d]/g, "")
-  
-    return numbers
-  }
-
   useEffect(() => {
   }, [validated])
 
-  const handleChecked = (event) => {
+  const handleChecked = () => {
     setChecked(current => !current)
-  }
-
-  const isFormValid = () => {
-    return (values.nome && 
-            values.email && 
-            values.password && 
-            values.telefone && 
-            values.logradouro &&
-            values.bairro &&
-            values.numero &&
-            values.cep &&
-            values.cpf &&
-            checked === true)
-  }
-
-  const validate = (fieldValues = values) => {
-
-    setValidated(true)
-    
-    if (temp == {}) console.log('Prencha o formulário')
-
-    let temp = {...errors}
-
-    if ('nome' in fieldValues)
-     temp.nome = values.nome ? "" : "É necessário preencher este campo."
-
-    if ('email' in fieldValues)
-     temp.email = (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(fieldValues.email) ? "" : "Este email não é válido."
-    
-    if ('telefone' in fieldValues)
-     temp.telefone = (/^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$/).test(fieldValues.telefone) ? "" : "O telefone deve ter no mínimo 11 dígitos (apenas números)"
-    
-    if ('password' in fieldValues)
-      temp.password = fieldValues.password ? "" : "É necessário preencher o campo Password"
-    
-    if ('logradouro' in fieldValues) 
-      temp.logradouro = fieldValues.logradouro ? "" : "É necessário preencher o campo Logradouro"
-    
-    if ('bairro' in fieldValues)
-      temp.bairro = fieldValues.bairro ? "" : "É necessário preencher o campo Bairro"
-    
-    if ('numero' in fieldValues)
-      temp.numero = !(/[^\d]/).test(fieldValues.numero) ? "" : "Preencha o campo Número adequadamente"
-    
-    if ('cep' in fieldValues)
-      temp.cep = (/^([\d]{2})\.*([\d]{3})-*([\d]{3})/).test(fieldValues.cep) ? "" : "Preencha o campo CEP adequadamente"
-    
-    if ('cpf' in fieldValues)
-      temp.cpf = (/([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/).test(fieldValues.cpf) ? "" : "Preencha o campo CPF adequadamente"
-
-    setErrors({
-      ...temp
-    })
-
-    return Object.values(temp).every(x => x == "")
   }
 
   const handleSubmit = e => {
     e.preventDefault();
     
-    if(validate()) {
+    if(validate(values, errors, setErrors, setValidated)) {
       handleRegister()
     }
   }
@@ -444,7 +380,7 @@ const RegisterPage = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <Button disabled={!isFormValid()} fullWidth size='large' type='submit' onClick={handleSubmit} variant='contained' sx={{ marginBottom: 7 }}>
+                <Button disabled={!isFormValid(values, checked)} fullWidth size='large' type='submit' onClick={handleSubmit} variant='contained' sx={{ marginBottom: 7 }}>
                   Cadastrar
                 </Button>
               </Grid>

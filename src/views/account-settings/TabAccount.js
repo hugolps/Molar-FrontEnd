@@ -82,31 +82,7 @@ const TabAccount = () => {
   return (
     <CardContent>
       <form>
-        <Grid container spacing={7}>
-          {/* <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <ImgStyled src={imgSrc} alt='Profile Pic' />
-              <Box>
-                <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
-                  Upload New Photo
-                  <input
-                    hidden
-                    type='file'
-                    onChange={onChange}
-                    accept='image/png, image/jpeg'
-                    id='account-settings-upload-image'
-                  />
-                </ButtonStyled>
-                <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgSrc('/images/avatars/1.png')}>
-                  Reset
-                </ResetButtonStyled>
-                <Typography variant='body2' sx={{ marginTop: 5 }}>
-                  Allowed PNG or JPEG. Max size of 800K.
-                </Typography>
-              </Box>
-            </Box>
-          </Grid> */}
-
+        <Grid container spacing={7}>  
           <Grid item xs={12} sm={6}>
             <TextField fullWidth label='Nome Completo' placeholder='Nome Completo' defaultValue='' required />
           </Grid>
@@ -120,8 +96,6 @@ const TabAccount = () => {
               placeholder='(XX) XXXXX-XXXX'
               value={validNumber}
               required
-
-              //defaultValue=""
             />
           </Grid>
           <Grid item xs={12} sm={6}>
