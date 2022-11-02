@@ -1,5 +1,6 @@
 // ** React Imports
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect, useContext } from 'react'
+import { AuthContext } from 'src/contexts/AuthContext'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -62,9 +63,23 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const RegisterPage = () => {
   // ** States
   const [values, setValues] = useState({
+    nome: '',
+    email: '',
     password: '',
-    showPassword: false
+    telefone: '',
+    logradouro: '',
+    bairro: '',
+    numero: '',
+    cep: '',
+    cpf: '',
+    showPassword: false,
   })
+  const [errors, setErrors] = useState({})
+  const [validated, setValidated] = useState(false)
+  const [checked, setChecked] = useState(false)
+
+  const {userInfo, setUserInfo} = useContext(AuthContext)
+
 
   // ** Hook
   const theme = useTheme()
@@ -79,6 +94,120 @@ const RegisterPage = () => {
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+
+  const handleRegister = () => {
+    event.preventDefault()
+
+    const registerValues = {
+      usuario: {
+        email: values.email.trim(),
+        password: values.password.trim(),
+        nome: values.nome.trim(),
+        telefone: onlyNumbers(values.telefone.trim()),
+        cpf: onlyNumbers(values.cpf.trim()), 
+        endereco_attributes: {
+            logradouro: values.logradouro.trim(),
+            bairro: values.bairro.trim(),
+            numero_residencia: onlyNumbers(values.numero.trim()),
+            cep: onlyNumbers(values.cep.trim())
+        }
+      }
+    }
+
+    fetch(`http://0.0.0.0:3000/usuarios`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(registerValues)
+    })
+      .then(response => {
+          if(response.status === 200) {
+          response.json()
+          }
+        })
+      .then(data => setUserInfo(registerValues))
+      .catch((error) => {
+        console.log('Algo deu errado!', error)
+      })      
+  }
+
+  const onlyNumbers = (text) => {
+    const numbers = text.replace(/[^\d]/g, "")
+  
+    return numbers
+  }
+
+  useEffect(() => {
+  }, [validated])
+
+  const handleChecked = (event) => {
+    setChecked(current => !current)
+  }
+
+  const isFormValid = () => {
+    return (values.nome && 
+            values.email && 
+            values.password && 
+            values.telefone && 
+            values.logradouro &&
+            values.bairro &&
+            values.numero &&
+            values.cep &&
+            values.cpf &&
+            checked === true)
+  }
+
+  const validate = (fieldValues = values) => {
+
+    setValidated(true)
+    
+    if (temp == {}) console.log('Prencha o formulário')
+
+    let temp = {...errors}
+
+    if ('nome' in fieldValues)
+     temp.nome = values.nome ? "" : "É necessário preencher este campo."
+
+    if ('email' in fieldValues)
+     temp.email = (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(fieldValues.email) ? "" : "Este email não é válido."
+    
+    if ('telefone' in fieldValues)
+     temp.telefone = (/^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$/).test(fieldValues.telefone) ? "" : "O telefone deve ter no mínimo 11 dígitos (apenas números)"
+    
+    if ('password' in fieldValues)
+      temp.password = fieldValues.password ? "" : "É necessário preencher o campo Password"
+    
+    if ('logradouro' in fieldValues) 
+      temp.logradouro = fieldValues.logradouro ? "" : "É necessário preencher o campo Logradouro"
+    
+    if ('bairro' in fieldValues)
+      temp.bairro = fieldValues.bairro ? "" : "É necessário preencher o campo Bairro"
+    
+    if ('numero' in fieldValues)
+      temp.numero = !(/[^\d]/).test(fieldValues.numero) ? "" : "Preencha o campo Número adequadamente"
+    
+    if ('cep' in fieldValues)
+      temp.cep = (/^([\d]{2})\.*([\d]{3})-*([\d]{3})/).test(fieldValues.cep) ? "" : "Preencha o campo CEP adequadamente"
+    
+    if ('cpf' in fieldValues)
+      temp.cpf = (/([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/).test(fieldValues.cpf) ? "" : "Preencha o campo CPF adequadamente"
+
+    setErrors({
+      ...temp
+    })
+
+    return Object.values(temp).every(x => x == "")
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    
+    if(validate()) {
+      handleRegister()
+    }
   }
 
   return (
@@ -164,26 +293,54 @@ const RegisterPage = () => {
             </Typography>
             <Typography variant='body2'>Cadastre-se para encontrar os melhores imóveis!</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
+          <form 
+            // noValidate 
+            autoComplete='off' 
+            onSubmit={handleSubmit}
+          >
             <Grid container spacing={7}>
               <Grid item xs={12} sm={12}>
-                <TextField fullWidth label='Nome Completo' placeholder='Nome Completo' defaultValue='' required />
+                <TextField 
+                  fullWidth 
+                  label='Nome'
+                  value={values.nome}
+                  onChange={handleChange('nome')}
+                  placeholder='Nome Completo' 
+                  required
+                  error={errors.nome && validated}
+                  helperText={errors.nome} 
+                  />
               </Grid>
-              {/* <Grid item xs={12} sm={12}>
-                <TextField fullWidth label='Username' placeholder='Username' defaultValue='' required />
-              </Grid> */}
               <Grid item xs={12} sm={12}>
-                <TextField fullWidth type='email' label='Email' placeholder='Email' defaultValue='' required />
+                <TextField 
+                  fullWidth 
+                  type='text' 
+                  label='Email'
+                  value={values.email}
+                  onChange={handleChange('email')} 
+                  placeholder='Email'
+                  required 
+                  error={errors.email && validated}
+                  helperText={errors.email}
+                  />
               </Grid>
               <Grid item xs={12} sm={12}>
                 <FormControl fullWidth>
-                  <InputLabel htmlFor='auth-register-password'>Senha</InputLabel>
+                  <InputLabel 
+                  required 
+                  htmlFor='auth-register-password'
+                  >
+                    Senha
+                  </InputLabel>
                   <OutlinedInput
                     label='Password'
-                    value={values.password}
                     id='auth-register-password'
+                    value={values.password}
                     onChange={handleChange('password')}
                     type={values.showPassword ? 'text' : 'password'}
+                    error={errors.password && validated}
+                    // helperText={errors.password}
+                    required
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
@@ -203,39 +360,79 @@ const RegisterPage = () => {
                 <TextField
                   fullWidth
                   type='text'
-
-                  // validate={isNumber}
-                  onChange={() => onlynumber}
+                  value={values.telefone}
+                  onChange={handleChange('telefone')}
                   label='Telefone'
                   placeholder='(XX) XXXXX-XXXX'
-
-                  // value={validNumber}
+                  error={errors.telefone && validated}
+                  helperText={errors.telefone}
                   required
-
-                  //defaultValue=""
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <TextField fullWidth type='text' label='Logradouro' placeholder='Logradouro' defaultValue='' required />
+                <TextField 
+                  fullWidth 
+                  type='text'
+                  value={values.logradouro}
+                  onChange={handleChange('logradouro')}
+                  label='Logradouro' 
+                  placeholder='Logradouro'
+                  error={errors.logradouro && validated}
+                  helperText={errors.logradouro} 
+                  required />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField fullWidth type='text' label='Bairro' placeholder='Bairro' defaultValue='' required />
+                <TextField 
+                  fullWidth 
+                  type='text' 
+                  value={values.bairro}
+                  onChange={handleChange('bairro')}
+                  label='Bairro' 
+                  placeholder='Bairro'
+                  error={errors.bairro && validated}
+                  helperText={errors.bairro}  
+                  required />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField fullWidth type='text' label='Número' placeholder='Número' defaultValue='' required />
+                <TextField 
+                  fullWidth 
+                  type='text'
+                  value={values.numero}
+                  onChange={handleChange('numero')} 
+                  label='Número' 
+                  placeholder='Número'
+                  error={errors.numero && validated}
+                  helperText={errors.numero}   
+                  required />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField fullWidth type='text' label='CEP' placeholder='CEP' defaultValue='' required />
+                <TextField 
+                  fullWidth 
+                  type='text'
+                  value={values.cep}
+                  onChange={handleChange('cep')} 
+                  label='CEP' 
+                  placeholder='CEP'
+                  error={errors.cep && validated}
+                  helperText={errors.cep}  
+                  required />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField fullWidth type='text' label='CPF' placeholder='CPF' defaultValue='' required />
+                <TextField 
+                  fullWidth 
+                  type='text'
+                  value={values.cpf}
+                  onChange={handleChange('cpf')}  
+                  label='CPF' 
+                  placeholder='CPF'
+                  error={errors.cpf && validated}
+                  helperText={errors.cpf}   
+                  required />
               </Grid>
 
-              {/* <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} /> */}
-              {/* <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} /> */}
               <Grid item xs={12} sm={12}>
                 <FormControlLabel
-                  control={<Checkbox />}
+                  control={<Checkbox value={checked} onChange={handleChecked} required/>}
                   label={
                     <Fragment>
                       <span>Eu concordo com </span>
@@ -247,7 +444,7 @@ const RegisterPage = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
+                <Button disabled={!isFormValid()} fullWidth size='large' type='submit' onClick={handleSubmit} variant='contained' sx={{ marginBottom: 7 }}>
                   Cadastrar
                 </Button>
               </Grid>

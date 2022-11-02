@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -38,6 +38,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import { AuthContext } from 'src/contexts/AuthContext'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -58,6 +59,8 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 }))
 
 const LoginPage = () => {
+  const {userInfo, setUserInfo} = useContext(AuthContext)
+  
   // ** State
   const [values, setValues] = useState({
     email: '',
@@ -72,17 +75,12 @@ const LoginPage = () => {
   const handleLogin = () => {
     event.preventDefault()
 
-    const user = {
+    const loginValues = {
       usuario: {
         email: values.email,
         password: values.password
       }
     }
-    console.log(user)
-
-    // fetch('http://0.0.0.0:3000/api/v1/usuarios')
-    // .then(response => response.json())
-    // .then(data => console.log(data))
 
     fetch(`http://0.0.0.0:3000/usuarios/sign_in`, {
       method: 'POST',
@@ -90,10 +88,11 @@ const LoginPage = () => {
         'Content-Type': 'application/json',
         Accept: 'application/json'
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify(loginValues)
     })
       .then(response => response.json())
-      .then(data => console.log("Reposta: ", data))
+      .then(data => setUserInfo(data))
+      
   }
 
   const handleChange = prop => event => {

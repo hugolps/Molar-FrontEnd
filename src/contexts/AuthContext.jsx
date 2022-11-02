@@ -1,16 +1,23 @@
-import { createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 
 export const AuthContext = createContext({})
 
-export function AuthProvider({children}) {
+export const AuthProvider = ({children}) => {
+    const [userInfo, setUserInfo] = useState({})
+    const [address, setAddress] = useState({})
+    const [user, setUser] = useState({})
+    
     const isAuthenticated = false
 
-    async function signIn() {
-        const { } = fetch()
-    }
+    useEffect(() => {
+        setAddress(userInfo.endereco)
+        setUser(userInfo.usuario)
+        console.log('Auth: ', userInfo)
+    }, [userInfo])
 
+    
     return (
-        <AuthContext.Provider value={{isAuthenticated}}>
+        <AuthContext.Provider value={{isAuthenticated, userInfo, setUserInfo, address, setAddress}}>
             {children}
         </AuthContext.Provider>
     )
