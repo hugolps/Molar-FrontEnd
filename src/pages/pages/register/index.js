@@ -5,6 +5,7 @@ import {isFormValid, onlyNumbers, validate} from 'src/validation/index.js'
 
 // ** Next Imports
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -73,13 +74,14 @@ const RegisterPage = () => {
   })
   const [validated, setValidated] = useState(false)
   const [checked, setChecked] = useState(false)
-  
+
   const {errors, setErrors} = useContext(AuthContext)
   const {userInfo, setUserInfo} = useContext(AuthContext)
 
 
   // ** Hook
   const theme = useTheme()
+  const router = useRouter()
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
@@ -102,7 +104,7 @@ const RegisterPage = () => {
         password: values.password.trim(),
         nome: values.nome.trim(),
         telefone: onlyNumbers(values.telefone.trim()),
-        cpf: onlyNumbers(values.cpf.trim()), 
+        cpf: onlyNumbers(values.cpf.trim()),
         endereco_attributes: {
             logradouro: values.logradouro.trim(),
             bairro: values.bairro.trim(),
@@ -112,7 +114,7 @@ const RegisterPage = () => {
       }
     }
 
-    fetch(`http://0.0.0.0:3000/usuarios`, {
+    fetch(`http://localhost:3000/usuarios`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,9 +128,10 @@ const RegisterPage = () => {
           }
         })
       .then(setUserInfo(registerValues))
+      .then(router.push('/pages/login'))
       .catch((error) => {
         console.log('Algo deu errado!', error)
-      })      
+      })
   }
 
   useEffect(() => {
@@ -140,7 +143,7 @@ const RegisterPage = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    
+
     if(validate(values, errors, setErrors, setValidated)) {
       handleRegister()
     }
@@ -229,41 +232,41 @@ const RegisterPage = () => {
             </Typography>
             <Typography variant='body2'>Cadastre-se para encontrar os melhores imóveis!</Typography>
           </Box>
-          <form 
-            // noValidate 
-            autoComplete='off' 
+          <form
+            // noValidate
+            autoComplete='off'
             onSubmit={handleSubmit}
           >
             <Grid container spacing={7}>
               <Grid item xs={12} sm={12}>
-                <TextField 
-                  fullWidth 
+                <TextField
+                  fullWidth
                   label='Nome'
                   value={values.nome}
                   onChange={handleChange('nome')}
-                  placeholder='Nome Completo' 
+                  placeholder='Nome Completo'
                   required
                   error={errors.nome && validated}
-                  helperText={errors.nome} 
+                  helperText={errors.nome}
                   />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <TextField 
-                  fullWidth 
-                  type='text' 
+                <TextField
+                  fullWidth
+                  type='text'
                   label='Email'
                   value={values.email}
-                  onChange={handleChange('email')} 
+                  onChange={handleChange('email')}
                   placeholder='Email'
-                  required 
+                  required
                   error={errors.email && validated}
                   helperText={errors.email}
                   />
               </Grid>
               <Grid item xs={12} sm={12}>
                 <FormControl fullWidth>
-                  <InputLabel 
-                  required 
+                  <InputLabel
+                  required
                   htmlFor='auth-register-password'
                   >
                     Senha
@@ -306,63 +309,63 @@ const RegisterPage = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <TextField 
-                  fullWidth 
+                <TextField
+                  fullWidth
                   type='text'
                   value={values.logradouro}
                   onChange={handleChange('logradouro')}
-                  label='Logradouro' 
+                  label='Logradouro'
                   placeholder='Logradouro'
                   error={errors.logradouro && validated}
-                  helperText={errors.logradouro} 
+                  helperText={errors.logradouro}
                   required />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField 
-                  fullWidth 
-                  type='text' 
+                <TextField
+                  fullWidth
+                  type='text'
                   value={values.bairro}
                   onChange={handleChange('bairro')}
-                  label='Bairro' 
+                  label='Bairro'
                   placeholder='Bairro'
                   error={errors.bairro && validated}
-                  helperText={errors.bairro}  
+                  helperText={errors.bairro}
                   required />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField 
-                  fullWidth 
+                <TextField
+                  fullWidth
                   type='text'
                   value={values.numero}
-                  onChange={handleChange('numero')} 
-                  label='Número' 
+                  onChange={handleChange('numero')}
+                  label='Número'
                   placeholder='Número'
                   error={errors.numero && validated}
-                  helperText={errors.numero}   
+                  helperText={errors.numero}
                   required />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField 
-                  fullWidth 
+                <TextField
+                  fullWidth
                   type='text'
                   value={values.cep}
-                  onChange={handleChange('cep')} 
-                  label='CEP' 
+                  onChange={handleChange('cep')}
+                  label='CEP'
                   placeholder='CEP'
                   error={errors.cep && validated}
-                  helperText={errors.cep}  
+                  helperText={errors.cep}
                   required />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField 
-                  fullWidth 
+                <TextField
+                  fullWidth
                   type='text'
                   value={values.cpf}
-                  onChange={handleChange('cpf')}  
-                  label='CPF' 
+                  onChange={handleChange('cpf')}
+                  label='CPF'
                   placeholder='CPF'
                   error={errors.cpf && validated}
-                  helperText={errors.cpf}   
+                  helperText={errors.cpf}
                   required />
               </Grid>
 
