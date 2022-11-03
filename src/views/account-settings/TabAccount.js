@@ -1,5 +1,6 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { AuthContext } from 'src/contexts/AuthContext'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -45,14 +46,16 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
   }
 }))
 
-//\(?([0-9]{2,3}|0{1}((x|[0-9]){2,3}[0-9]{2}))\)?\s*[0-9]{4,5}[- ]*[0-9]{4}
-const isNumber = (str) => /^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$/.test(str)
 
 const TabAccount = () => {
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
-  const [validNumber, setValidNumber] = useState('')
+
+  const {errors, setErrors} = useContext(AuthContext)
+  const {userInfo, setUserInfo} = useContext(AuthContext)
+  const {user, setUser} = useContext(AuthContext)
+  const {address, setAddress} = useContext(AuthContext)
 
   const onChange = file => {
     const reader = new FileReader()
@@ -74,35 +77,53 @@ const TabAccount = () => {
     }
   }
 
-  const handleValidNumber = event => {
-    const result = toString(event.target.value).replace(/[^\d]/g, '')
-    setValidNumber(result)
-  }
+
 
   return (
     <CardContent>
       <form>
         <Grid container spacing={7}>  
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Nome Completo' placeholder='Nome Completo' defaultValue='' required />
+            <TextField 
+              fullWidth 
+              label='Nome Completo' 
+              placeholder='Nome Completo' 
+              defaultValue='' 
+              // value={user.nome}
+              required
+               />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type='text'
-              validate={isNumber}
-              onChange={() => onlynumber}
+              // onChange={}
               label='Telefone'
               placeholder='(XX) XXXXX-XXXX'
-              value={validNumber}
+              // value={user.telefone}
               required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth type='email' label='Email' placeholder='Email' defaultValue='' required />
+            <TextField 
+              fullWidth 
+              type='email' 
+              label='Email' 
+              placeholder='Email' 
+              defaultValue='' 
+              // value={userInfo.email}
+              required />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth type='text' label='Logradouro' placeholder='Logradouro' defaultValue='' required />
+            <TextField 
+              fullWidth 
+              type='text' 
+              label='Logradouro' 
+              placeholder='Logradouro' 
+              defaultValue='' 
+              // values={address.logradouro}
+              required 
+              />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField fullWidth type='text' label='Bairro' placeholder='Bairro' defaultValue='' required />

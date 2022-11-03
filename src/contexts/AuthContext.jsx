@@ -15,7 +15,9 @@ export const AuthProvider = ({children}) => {
         setAddress(userInfo.endereco)
         setUser(userInfo.usuario)
         console.log('Auth: ', userInfo)
-    }, [userInfo])
+        console.log('User: ', user)
+        console.log('Endereço: ', address)
+    }, [userInfo, user, address])
 
     
     return (

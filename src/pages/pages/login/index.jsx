@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -60,6 +60,7 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 
 const LoginPage = () => {
   const {userInfo, setUserInfo} = useContext(AuthContext)
+  const {user, setUser} = useContext(AuthContext)
   
   // ** State
   const [values, setValues] = useState({
@@ -92,8 +93,17 @@ const LoginPage = () => {
     })
       .then(response => response.json())
       .then(data => setUserInfo(data))
+      .then(console.log(userInfo))
+      .then(router.push('/'))
+      .then(console.log(userInfo))
       
   }
+
+  // useEffect(() => {
+  //   if ( user.email === loginValues.email ) {
+  //     router.push('/')
+  //   }
+  // },[user])
 
   const handleChange = prop => event => {
     // console.log(values)

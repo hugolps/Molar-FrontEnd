@@ -1,3 +1,6 @@
+import { useContext } from 'react'
+import { AuthContext } from 'src/contexts/AuthContext'
+
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
@@ -15,6 +18,11 @@ import ModeToggler from 'src/@core/layouts/components/shared-components/ModeTogg
 // import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
 
 const AppBarContent = props => {
+
+  const {user, setUser} = useContext(AuthContext)
+
+  console.log('Usuario no menu', user)
+
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
 
@@ -62,6 +70,7 @@ const AppBarContent = props => {
           </Box>
         )} */}
         <ModeToggler settings={settings} saveSettings={saveSettings} />
+        { user ? <span>{user.nome}</span> : console.log('Não tem user') }
         {/* <NotificationDropdown /> */}
         {/* <UserDropdown /> */}
       </Box>
