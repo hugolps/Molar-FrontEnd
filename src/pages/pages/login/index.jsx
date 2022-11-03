@@ -61,7 +61,7 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const LoginPage = () => {
   const {userInfo, setUserInfo} = useContext(AuthContext)
   const {user, setUser} = useContext(AuthContext)
-  
+
   // ** State
   const [values, setValues] = useState({
     email: '',
@@ -83,7 +83,7 @@ const LoginPage = () => {
       }
     }
 
-    fetch(`http://0.0.0.0:3000/usuarios/sign_in`, {
+    fetch(`http://localhost:3000/usuarios/sign_in`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const LoginPage = () => {
       .then(console.log(userInfo))
       .then(router.push('/'))
       .then(console.log(userInfo))
-      
+
   }
 
   // useEffect(() => {
