@@ -10,25 +10,28 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState({})
     const [authorization, setAuthorization] = useState({})
     const [errors, setErrors] = useState({})
+    const [auth, setAuth] = useState(Cookies.get('Authorization'))
+    const [userAuth, setUserAuth] = useState(Cookies.get('Usuario'))
+    const [addressAuth, setAddressAuth] = useState(Cookies.get('Endereco'))
 
     const isAuthenticated = false
-    const auth = Cookies.get('Authorization')
-    const userAuth = Cookies.get('Usuário')
-    const addressAuth = Cookies.get('Endereço')
+    // const auth = Cookies.get('Authorization')
+    // const userAuth = Cookies.get('Usuário')
+    // const addressAuth = Cookies.get('Endereço')
     const router = useRouter()
 
 
     const logout = () => {
         Cookies.remove('Authorization', {path: ''})
-        Cookies.remove('Usuário', {path: ''})
-        Cookies.remove('Endereço', {path: ''})
-        
+        Cookies.remove('Usuario', {path: ''})
+        Cookies.remove('Endereco', {path: ''})
+
         setUserInfo({})
 
-        if (!auth || auth === "undefined") {
+        if (!auth || auth === "undefined" || auth === {}) {
             router.push('/pages/login')
-          }
-        
+        }
+
     }
 
     useEffect(() => {
@@ -37,27 +40,32 @@ export const AuthProvider = ({children}) => {
         setUser(userInfo.usuario)
         setAuthorization(userInfo.Authorization)
         console.log('Auth: ', userInfo)
-    }
+        } else{
+          setAddress({})
+          setUser({})
+          setAuthorization({})
+        }
     }, [userInfo])
 
     useEffect(() => {
-        if (!auth || auth === "undefined") {
+      if (!auth || auth === "undefined" || auth === {}) {
+
             Cookies.set('Authorization', JSON.stringify(authorization))
             console.log('Token: ', authorization)
           }
     },[authorization, auth])
 
     useEffect(() => {
-        if (!userAuth || userAuth === "undefined") {
-            Cookies.set('Usuário', user)
-            console.log('Usuário', user)
+        if (!userAuth || userAuth === "undefined" || userAuth === {}) {
+            Cookies.set('Usuario', JSON.stringify(user))
+            console.log('Usuario', user)
           }
     },[user, userAuth])
 
     useEffect(() => {
-        if (!addressAuth || addressAuth === "undefined") {
-            Cookies.set('Endereço', address)
-            console.log('Endereço', address)
+        if (!addressAuth || addressAuth === "undefined" || addressAuth === {}) {
+            Cookies.set('Endereco', JSON.stringify(address))
+            console.log('Endereco', address)
           }
     },[address, addressAuth])
 
