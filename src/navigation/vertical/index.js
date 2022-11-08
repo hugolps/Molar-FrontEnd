@@ -33,7 +33,7 @@ export const navigation = () => {
       title: 'Login',
       icon: Login,
       path: '/pages/login',
-      openInNewTab: true
+      //openInNewTab: true
     },
 
     {

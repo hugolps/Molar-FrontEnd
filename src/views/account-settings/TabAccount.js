@@ -1,6 +1,7 @@
 // ** React Imports
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from 'src/contexts/AuthContext'
+import Cookies from 'js-cookie'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -54,8 +55,12 @@ const TabAccount = () => {
 
   const {errors, setErrors} = useContext(AuthContext)
   const {userInfo, setUserInfo} = useContext(AuthContext)
-  const {user, setUser} = useContext(AuthContext)
-  const {address, setAddress} = useContext(AuthContext)
+  const { user, setUser } = useContext(AuthContext)
+  const { address, setAddress } = useContext(AuthContext)
+
+  useEffect(() => {
+    console.log(Cookies.get('Usuário'))
+  },[])
 
   const onChange = file => {
     const reader = new FileReader()
@@ -66,17 +71,9 @@ const TabAccount = () => {
     }
   }
 
-  function onlynumber(evt) {
-    var theEvent = evt || window.event
-    var key = theEvent.keyCode || theEvent.which
-    key = String.fromCharCode(key)
-    var regex = /^[0-9.]+$/
-    if (!regex.test(key)) {
-      theEvent.returnValue = false
-      if (theEvent.preventDefault) theEvent.preventDefault()
-    }
+  const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
   }
-
 
 
   return (
@@ -85,11 +82,12 @@ const TabAccount = () => {
         <Grid container spacing={7}>  
           <Grid item xs={12} sm={6}>
             <TextField 
-              fullWidth 
+              fullWidth
+              onChange={event => handleChange('nome')}
               label='Nome Completo' 
               placeholder='Nome Completo' 
-              defaultValue='' 
-              // value={user.nome}
+              // defaultValue='' 
+              defaultValue={user.nome}
               required
                />
           </Grid>
@@ -97,31 +95,33 @@ const TabAccount = () => {
             <TextField
               fullWidth
               type='text'
-              // onChange={}
+              onChange={handleChange('telefone')}
               label='Telefone'
               placeholder='(XX) XXXXX-XXXX'
-              // value={user.telefone}
+              value={user.telefone}
               required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField 
               fullWidth 
-              type='email' 
+              type='email'
+              onChange={handleChange('email')}
               label='Email' 
               placeholder='Email' 
               defaultValue='' 
-              // value={userInfo.email}
+              value={user.email}
               required />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField 
               fullWidth 
-              type='text' 
+              type='text'
+              onChange={handleChange('logradouro')} 
               label='Logradouro' 
               placeholder='Logradouro' 
               defaultValue='' 
-              // values={address.logradouro}
+              value={address.logradouro}
               required 
               />
           </Grid>
@@ -132,17 +132,33 @@ const TabAccount = () => {
             <TextField
               fullWidth
               type='text'
+              onChange={handleChange('numero')} 
               label='Número da Residência'
               placeholder='Número da Residência'
-              defaultValue=''
+              value={address.numero}
               required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth type='text' label='CEP' placeholder='CEP' defaultValue='' required />
+            <TextField 
+            fullWidth 
+            type='text'
+            onChange={handleChange('cep')}  
+            label='CEP' 
+            placeholder='CEP' 
+            value={address.cep}
+            required />
           </Grid>
           <Grid item xs={12} sm={6}>
-              <TextField fullWidth type='text' label='CPF' placeholder='CPF' defaultValue='' required disabled/>
+              <TextField 
+              fullWidth 
+              type='text'
+              onChange={handleChange('cpf')}   
+              label='CPF' 
+              placeholder='CPF' 
+              value={user.cpf}
+              required 
+              disabled/>
           </Grid>
 
           {/* <Grid item xs={12} sm={6}>

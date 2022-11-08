@@ -99,12 +99,6 @@ const LoginPage = () => {
 
   }
 
-  // useEffect(() => {
-  //   if ( user.email === loginValues.email ) {
-  //     router.push('/')
-  //   }
-  // },[user])
-
   const handleChange = prop => event => {
     // console.log(values)
     setValues({ ...values, [prop]: event.target.value })

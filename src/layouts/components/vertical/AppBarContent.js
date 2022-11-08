@@ -3,6 +3,7 @@ import { AuthContext } from 'src/contexts/AuthContext'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -19,9 +20,7 @@ import ModeToggler from 'src/@core/layouts/components/shared-components/ModeTogg
 
 const AppBarContent = props => {
 
-  const {user, setUser} = useContext(AuthContext)
-
-  console.log('Usuario no menu', user)
+  const {user, setUser, logout} = useContext(AuthContext)
 
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
@@ -69,10 +68,11 @@ const AppBarContent = props => {
             />
           </Box>
         )} */}
+        { user ? <span>{user.nome}</span> : <span></span> }
         <ModeToggler settings={settings} saveSettings={saveSettings} />
-        { user ? <span>{user.nome}</span> : console.log('Não tem user') }
-        {/* <NotificationDropdown /> */}
-        {/* <UserDropdown /> */}
+        <Button fullWidth size='small' type='submit' onClick={logout} variant='contained' >
+          Logout
+        </Button>
       </Box>
     </Box>
   )
