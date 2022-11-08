@@ -53,10 +53,16 @@ const TabAccount = () => {
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
 
-  const {errors, setErrors} = useContext(AuthContext)
+  // const {errors, setErrors} = useContext(AuthContext)
   const {userInfo, setUserInfo} = useContext(AuthContext)
   const { user, setUser } = useContext(AuthContext)
   const { address, setAddress } = useContext(AuthContext)
+
+  const [userInfoEdit, setUserInfoEdit] = useState(userInfo)
+  const [userEdit, setUserEdit] = useState(user)
+  const [addressEdit, setAddressEdit] = useState(address)
+
+
 
   useEffect(() => {
     console.log(Cookies.get('Usuário'))
@@ -79,15 +85,15 @@ const TabAccount = () => {
   return (
     <CardContent>
       <form>
-        <Grid container spacing={7}>  
+        <Grid container spacing={7}>
           <Grid item xs={12} sm={6}>
-            <TextField 
+            <TextField
               fullWidth
               onChange={event => handleChange('nome')}
-              label='Nome Completo' 
-              placeholder='Nome Completo' 
-              // defaultValue='' 
-              defaultValue={user.nome}
+              label='Nome Completo'
+              placeholder='Nome Completo'
+              // defaultValue=''
+              defaultValue={userEdit.nome}
               required
                />
           </Grid>
@@ -98,66 +104,74 @@ const TabAccount = () => {
               onChange={handleChange('telefone')}
               label='Telefone'
               placeholder='(XX) XXXXX-XXXX'
-              value={user.telefone}
+              value={userEdit.telefone}
               required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField 
-              fullWidth 
+            <TextField
+              fullWidth
               type='email'
               onChange={handleChange('email')}
-              label='Email' 
-              placeholder='Email' 
-              defaultValue='' 
-              value={user.email}
+              label='Email'
+              placeholder='Email'
+              defaultValue=''
+              value={userEdit.email}
               required />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField 
-              fullWidth 
-              type='text'
-              onChange={handleChange('logradouro')} 
-              label='Logradouro' 
-              placeholder='Logradouro' 
-              defaultValue='' 
-              value={address.logradouro}
-              required 
-              />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField fullWidth type='text' label='Bairro' placeholder='Bairro' defaultValue='' required />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type='text'
-              onChange={handleChange('numero')} 
+              onChange={handleChange('logradouro')}
+              label='Logradouro'
+              placeholder='Logradouro'
+              defaultValue=''
+              value={addressEdit.logradouro}
+              required
+              />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type='text'
+              onChange={handleChange('bairro')}
+              label='Bairro'
+              placeholder='Bairro'
+              value={addressEdit.bairro}
+              required
+              />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type='text'
+              onChange={handleChange('numero')}
               label='Número da Residência'
               placeholder='Número da Residência'
-              value={address.numero}
+              value={addressEdit.numero}
               required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField 
-            fullWidth 
+            <TextField
+            fullWidth
             type='text'
-            onChange={handleChange('cep')}  
-            label='CEP' 
-            placeholder='CEP' 
-            value={address.cep}
+            onChange={handleChange('cep')}
+            label='CEP'
+            placeholder='CEP'
+            value={addressEdit.cep}
             required />
           </Grid>
           <Grid item xs={12} sm={6}>
-              <TextField 
-              fullWidth 
+              <TextField
+              fullWidth
               type='text'
-              onChange={handleChange('cpf')}   
-              label='CPF' 
-              placeholder='CPF' 
-              value={user.cpf}
-              required 
+              onChange={handleChange('cpf')}
+              label='CPF'
+              placeholder='CPF'
+              value={userEdit.cpf}
+              required
               disabled/>
           </Grid>
 
