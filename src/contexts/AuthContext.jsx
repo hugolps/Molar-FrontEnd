@@ -35,7 +35,7 @@ export const AuthProvider = ({children}) => {
     }
 
     useEffect(() => {
-        if(userInfo !== {}) {
+        if(userInfo !== {} && userInfo !== "undefined") {
         setAddress(userInfo.endereco)
         setUser(userInfo.usuario)
         setAuthorization(userInfo.Authorization)

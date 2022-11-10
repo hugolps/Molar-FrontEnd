@@ -2,6 +2,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from 'src/contexts/AuthContext'
 import Cookies from 'js-cookie'
+import {isFormValid, onlyNumbers, validate} from 'src/validation/index.js'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -49,7 +50,7 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 
 
 const TabAccount = () => {
-  // ** State
+  // ** States
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
 
@@ -58,11 +59,20 @@ const TabAccount = () => {
   const { user, setUser } = useContext(AuthContext)
   const { address, setAddress } = useContext(AuthContext)
 
-  const [userInfoEdit, setUserInfoEdit] = useState(userInfo)
-  const [userEdit, setUserEdit] = useState(user)
-  const [addressEdit, setAddressEdit] = useState(address)
+  // const [userInfoEdit, setUserInfoEdit] = useState(userInfo)
+  // const [userEdit, setUserEdit] = useState(user)
+  // const [addressEdit, setAddressEdit] = useState(address)
 
-
+  const [values, setValues] = useState({
+    nome: user.nome,
+    email: user.email,
+    telefone: user.telefone,
+    logradouro: address.logradouro,
+    bairro: address.bairro,
+    numero_residencia: address.numero_residencia,
+    cep: address.cep,
+    cpf: user.cpf,
+  })
 
   useEffect(() => {
     console.log(Cookies.get('Usuário'))
@@ -79,6 +89,51 @@ const TabAccount = () => {
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
+    // console.log(event.target.value)
+  }
+
+  const handleEdit = () => {
+    event.preventDefault()
+    console.log(address)
+    const updateValues = {
+      usuario: {
+        id: user.id,
+        email: values.email.trim(),
+        nome: values.nome.trim(),
+        telefone: onlyNumbers(values.telefone.trim()),
+        cpf: onlyNumbers(values.cpf.trim()),
+        endereco_attributes: {
+            id: address.id,
+            usuario_id: user.id,
+            logradouro: values.logradouro.trim(),
+            bairro: values.bairro.trim(),
+            numero_residencia: onlyNumbers(values.numero_residencia.trim()),
+            cep: onlyNumbers(values.cep.trim())
+        }
+      }
+    }
+
+    fetch(`http://localhost:3000/api/v1/usuarios/${user.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(updateValues)
+    })
+      .then(response => {
+          if(response.status === 200) {
+          response.json()
+          }
+        })
+      .then(data => setUserInfo({
+        usuario: updateValues.usuario,
+        endereco: updateValues.usuario.endereco,
+        Authorization: userInfo.Authorization
+      }))
+      .catch((error) => {
+        console.log('Algo deu errado!', error)
+      })
   }
 
 
@@ -93,7 +148,7 @@ const TabAccount = () => {
               label='Nome Completo'
               placeholder='Nome Completo'
               // defaultValue=''
-              defaultValue={userEdit.nome}
+              defaultValue={values.nome}
               required
                />
           </Grid>
@@ -104,7 +159,7 @@ const TabAccount = () => {
               onChange={handleChange('telefone')}
               label='Telefone'
               placeholder='(XX) XXXXX-XXXX'
-              value={userEdit.telefone}
+              value={values.telefone}
               required
             />
           </Grid>
@@ -116,7 +171,7 @@ const TabAccount = () => {
               label='Email'
               placeholder='Email'
               defaultValue=''
-              value={userEdit.email}
+              value={values.email}
               required />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -127,7 +182,7 @@ const TabAccount = () => {
               label='Logradouro'
               placeholder='Logradouro'
               defaultValue=''
-              value={addressEdit.logradouro}
+              value={values.logradouro}
               required
               />
           </Grid>
@@ -138,7 +193,7 @@ const TabAccount = () => {
               onChange={handleChange('bairro')}
               label='Bairro'
               placeholder='Bairro'
-              value={addressEdit.bairro}
+              value={values.bairro}
               required
               />
           </Grid>
@@ -149,7 +204,7 @@ const TabAccount = () => {
               onChange={handleChange('numero')}
               label='Número da Residência'
               placeholder='Número da Residência'
-              value={addressEdit.numero}
+              value={values.numero_residencia}
               required
             />
           </Grid>
@@ -160,7 +215,7 @@ const TabAccount = () => {
             onChange={handleChange('cep')}
             label='CEP'
             placeholder='CEP'
-            value={addressEdit.cep}
+            value={values.cep}
             required />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -170,7 +225,7 @@ const TabAccount = () => {
               onChange={handleChange('cpf')}
               label='CPF'
               placeholder='CPF'
-              value={userEdit.cpf}
+              value={values.cpf}
               required
               disabled/>
           </Grid>
@@ -222,7 +277,7 @@ const TabAccount = () => {
 
           <Grid item xs={12} spacing={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box>
-              <Button variant='contained' sx={{ marginRight: 3.5 }}>
+              <Button onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
                 Salvar Alterações
               </Button>
               <Button type='cancel' variant='outlined' color='error'>

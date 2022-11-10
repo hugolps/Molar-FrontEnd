@@ -36,12 +36,12 @@ export const navigation = () => {
       //openInNewTab: true
     },
 
-    {
-      title: 'Logout',
-      icon: Logout,
-      path: '/pages/login',
-      openInNewTab: true
-    }
+    // {
+    //   title: 'Logout',
+    //   icon: Logout,
+    //   path: '/pages/login',
+    //   openInNewTab: true
+    // }
 
     // {
     //   sectionTitle: 'Pages'
