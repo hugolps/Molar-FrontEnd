@@ -88,6 +88,10 @@ export const AuthProvider = ({children}) => {
             setErrors,
             authorization,
             setAuthorization,
+            auth,
+            addressAuth,
+            userAuth,
+            setAuth,
             logout
             }}>
             {children}

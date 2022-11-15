@@ -54,25 +54,41 @@ const TabAccount = () => {
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
 
-  // const {errors, setErrors} = useContext(AuthContext)
-  const {userInfo, setUserInfo} = useContext(AuthContext)
-  const { user, setUser } = useContext(AuthContext)
-  const { address, setAddress } = useContext(AuthContext)
+  console.log('Enderecooo: ', addressAuth)
 
-  // const [userInfoEdit, setUserInfoEdit] = useState(userInfo)
-  // const [userEdit, setUserEdit] = useState(user)
-  // const [addressEdit, setAddressEdit] = useState(address)
+  const {
+    userInfo,
+    setUserInfo,
+    user,
+    setUser,
+    address,
+    setAddress,
+    auth, 
+    setAuth,
+    addressAuth, 
+    setAddressAuth,
+    userAuth
+   } = useContext(AuthContext)
+
+  //  console.log('Enderecooo: ', JSON.parse(addressAuth))
+   console.log('Values: ', values)
+  
+   const addressUpdate = JSON.parse(addressAuth)
+   const userUpdate = JSON.parse(userAuth)
 
   const [values, setValues] = useState({
-    nome: user.nome,
-    email: user.email,
-    telefone: user.telefone,
-    logradouro: address.logradouro,
-    bairro: address.bairro,
-    numero_residencia: address.numero_residencia,
-    cep: address.cep,
-    cpf: user.cpf,
+    nome: userUpdate.nome,
+    email: userUpdate.email,
+    telefone: userUpdate.telefone,
+    logradouro: addressUpdate.logradouro,
+    bairro: addressUpdate.bairro,
+    numero: addressUpdate.numero_residencia,
+    cep: addressUpdate.cep,
+    cpf: userUpdate.cpf,
   })
+
+  console.log('Values: ', values)
+
 
   useEffect(() => {
     console.log(Cookies.get('Usuário'))
@@ -94,7 +110,8 @@ const TabAccount = () => {
 
   const handleEdit = () => {
     event.preventDefault()
-    console.log(address)
+    console.log(addressAuth)
+
     const updateValues = {
       usuario: {
         id: user.id,
@@ -107,7 +124,7 @@ const TabAccount = () => {
             usuario_id: user.id,
             logradouro: values.logradouro.trim(),
             bairro: values.bairro.trim(),
-            numero_residencia: onlyNumbers(values.numero_residencia.trim()),
+            numero_residencia: onlyNumbers(values.numero.trim()),
             cep: onlyNumbers(values.cep.trim())
         }
       }
@@ -117,7 +134,8 @@ const TabAccount = () => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json'
+        Accept: 'application/json',
+        'Authorization': `Bearer ${JSON.parse(auth)}`
       },
       body: JSON.stringify(updateValues)
     })
@@ -128,7 +146,7 @@ const TabAccount = () => {
         })
       .then(data => setUserInfo({
         usuario: updateValues.usuario,
-        endereco: updateValues.usuario.endereco,
+        // endereco: updateValues.usuario.endereco,
         Authorization: userInfo.Authorization
       }))
       .catch((error) => {
@@ -204,7 +222,7 @@ const TabAccount = () => {
               onChange={handleChange('numero')}
               label='Número da Residência'
               placeholder='Número da Residência'
-              value={values.numero_residencia}
+              value={values.numero}
               required
             />
           </Grid>
