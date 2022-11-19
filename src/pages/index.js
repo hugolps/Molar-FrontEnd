@@ -1,100 +1,89 @@
+// ** React Imports
+import { useState } from 'react'
+
 // ** MUI Imports
-import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import TabList from '@mui/lab/TabList'
+import TabPanel from '@mui/lab/TabPanel'
+import TabContext from '@mui/lab/TabContext'
+import { styled } from '@mui/material/styles'
+import MuiTab from '@mui/material/Tab'
 
 // ** Icons Imports
-import Poll from 'mdi-material-ui/Poll'
-import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
-import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import BriefcaseVariantOutline from 'mdi-material-ui/BriefcaseVariantOutline'
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
-// ** Custom Components Imports
-import CardStatisticsVerticalComponent from 'src/@core/components/card-statistics/card-stats-vertical'
+// ** Demo Tabs Imports
+import TabInfo from 'src/views/principal/MeusImoveis'
+import AdicionarImovel from 'src/views/principal/AdicionarImovel'
 
-// ** Styled Component Import
-import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
+// ** Third Party Styles Imports
+import 'react-datepicker/dist/react-datepicker.css'
 
-// ** Demo Components Imports
-import Table from 'src/views/dashboard/Table'
-import Trophy from 'src/views/dashboard/Trophy'
-import TotalEarning from 'src/views/dashboard/TotalEarning'
-import StatisticsCard from 'src/views/dashboard/StatisticsCard'
-import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
-import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
-import SalesByCountries from 'src/views/dashboard/SalesByCountries'
+const Tab = styled(MuiTab)(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    minWidth: 100,
+  },
+  [theme.breakpoints.down('sm')]: {
+    minWidth: 67
+  }
+}))
+
+const TabName = styled('span')(({ theme }) => ({
+  lineHeight: 1.71,
+  fontSize: '0.875rem',
+  marginLeft: theme.spacing(2.4),
+  [theme.breakpoints.down('md')]: {
+    display: 'none'
+  }
+}))
 
 const Dashboard = () => {
+    // ** State
+    const [value, setValue] = useState('meus-imoveis')
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
+
   return (
-    <ApexChartWrapper>
-      {/* <Grid container spacing={6}>
-        <Grid item xs={12} md={4}>
-          <Trophy />
-        </Grid>
-        <Grid item xs={12} md={8}>
-          <StatisticsCard />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <WeeklyOverview />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <TotalEarning />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <Grid container spacing={6}>
-            <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='$25.6k'
-                icon={<Poll />}
-                color='success'
-                trendNumber='+42%'
-                title='Total Profit'
-                subtitle='Weekly Profit'
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='$78'
-                title='Refunds'
-                trend='negative'
-                color='secondary'
-                trendNumber='-15%'
-                subtitle='Past Month'
-                icon={<CurrencyUsd />}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='862'
-                trend='negative'
-                trendNumber='-18%'
-                title='New Project'
-                subtitle='Yearly Project'
-                icon={<BriefcaseVariantOutline />}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='15'
-                color='warning'
-                trend='negative'
-                trendNumber='-18%'
-                subtitle='Last Week'
-                title='Sales Queries'
-                icon={<HelpCircleOutline />}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <SalesByCountries />
-        </Grid>
-        <Grid item xs={12} md={12} lg={8}>
-          <DepositWithdraw />
-        </Grid>
-        <Grid item xs={12}>
-          <Table />
-        </Grid>
-      </Grid> */}
-    </ApexChartWrapper>
+    <Card>
+      <TabContext value={value}>
+        <TabList
+          onChange={handleChange}
+          aria-label='principal tabs'
+          sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
+        >
+          <Tab
+            value='meus-imoveis'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center'}}>
+                <HomeWorkOutlinedIcon />
+                <TabName>Meus Imoveis</TabName>
+              </Box>
+            }
+          />
+          <Tab
+            value='buscar-imoveis'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <AddOutlinedIcon />
+                <TabName>Adicionar Imóvel</TabName>
+              </Box>
+            }
+          />
+        </TabList>
+
+        <TabPanel sx={{ p: 0 }} value='meus-imoveis'>
+          <TabInfo />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='buscar-imoveis'>
+          <AdicionarImovel />
+        </TabPanel>
+      </TabContext>
+    </Card>
   )
 }
 

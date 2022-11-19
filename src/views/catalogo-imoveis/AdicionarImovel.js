@@ -1,4 +1,3 @@
-// ** React Imports
 import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from 'src/contexts/AuthContext'
 import Cookies from 'js-cookie'
@@ -7,22 +6,14 @@ import {isFormValid, onlyNumbers, validate} from 'src/validation/index.js'
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
-import Alert from '@mui/material/Alert'
-import Select from '@mui/material/Select'
 import { styled } from '@mui/material/styles'
 import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import InputLabel from '@mui/material/InputLabel'
-import AlertTitle from '@mui/material/AlertTitle'
-import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 
 // ** Icons Imports
-import Close from 'mdi-material-ui/Close'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -48,13 +39,10 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
   }
 }))
 
-
-const TabAccount = () => {
+const AdicionarImovel = () => {
   // ** States
   const [openAlert, setOpenAlert] = useState(true)
-  const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
-
-  //console.log('Enderecooo: ', addressAuth)
+  const [imgSrc, setImgSrc] = useState('/images/misc/triangle-dark.png')
 
   const {
     userInfo,
@@ -70,21 +58,21 @@ const TabAccount = () => {
     userAuth
    } = useContext(AuthContext)
 
-  //  console.log('Enderecooo: ', JSON.parse(addressAuth))
    console.log('Values: ', values)
   
    const addressUpdate = JSON.parse(addressAuth)
    const userUpdate = JSON.parse(userAuth)
 
   const [values, setValues] = useState({
-    nome: userUpdate.nome,
-    email: userUpdate.email,
-    telefone: userUpdate.telefone,
-    logradouro: addressUpdate.logradouro,
-    bairro: addressUpdate.bairro,
-    numero: addressUpdate.numero_residencia,
-    cep: addressUpdate.cep,
-    cpf: userUpdate.cpf,
+    titulo: 'Apartamento no Bessa',
+    preco: 100000,
+    tipoImovel: 'casa',
+    bairro: 'bessa',
+    area: 92,
+    quartos: 3,
+    banheiros: 2,
+    vagasGaragem: 2,
+    
   })
 
   console.log('Values: ', values)
@@ -105,7 +93,6 @@ const TabAccount = () => {
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
-    // console.log(event.target.value)
   }
 
   const handleEdit = () => {
@@ -146,7 +133,6 @@ const TabAccount = () => {
         })
       .then(data => setUserInfo({
         usuario: updateValues.usuario,
-        // endereco: updateValues.usuario.endereco,
         Authorization: userInfo.Authorization
       }))
       .catch((error) => {
@@ -156,54 +142,46 @@ const TabAccount = () => {
 
 
   return (
-    <CardContent>
-      <form>
+
+  <CardContent>
         <Grid container spacing={7}>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              onChange={event => handleChange('nome')}
-              label='Nome Completo'
-              placeholder='Nome Completo'
-              // defaultValue=''
-              defaultValue={values.nome}
+              type='text'
+              onChange={event => handleChange('titulo')}
+              label='Título do Anúncio'
+              placeholder='Título do Anúncio'
+              value={values.titulo}
               required
                />
           </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type='number'
+              onChange={event => handleChange('preco')}
+              label='Preço (R$)'
+              placeholder='Preço'
+              value={values.preco}
+              required
+               />
+          </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type='text'
-              onChange={handleChange('telefone')}
-              label='Telefone'
-              placeholder='(XX) XXXXX-XXXX'
-              value={values.telefone}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              type='email'
-              onChange={handleChange('email')}
-              label='Email'
-              placeholder='Email'
+              onChange={handleChange('tipoImovel')}
+              label='Tipo do Imóvel'
+              placeholder='Tipo do Imóvel'
               defaultValue=''
-              value={values.email}
-              required />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              type='text'
-              onChange={handleChange('logradouro')}
-              label='Logradouro'
-              placeholder='Logradouro'
-              defaultValue=''
-              value={values.logradouro}
-              required
+              value={values.tipoImovel}
+              required 
               />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -215,104 +193,94 @@ const TabAccount = () => {
               required
               />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              type='text'
-              onChange={handleChange('numero')}
-              label='Número da Residência'
-              placeholder='Número da Residência'
-              value={values.numero}
+              type='number'
+              onChange={handleChange('area')}
+              label='Área (m2)'
+              placeholder='Área'
+              value={values.area}
               required
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
-            fullWidth
-            type='text'
-            onChange={handleChange('cep')}
-            label='CEP'
-            placeholder='CEP'
-            value={values.cep}
-            required />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-              <TextField
               fullWidth
-              type='text'
-              onChange={handleChange('cpf')}
-              label='CPF'
-              placeholder='CPF'
-              value={values.cpf}
+              type='number'
+              onChange={handleChange('quartos')}
+              label='Número de Quartos'
+              placeholder='Número de Quartos'
+              value={values.quartos}
               required
-              disabled/>
+            />
           </Grid>
 
-          {/* <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Role</InputLabel>
-              <Select label='Role' defaultValue='admin'>
-                <MenuItem value='admin'>Admin</MenuItem>
-                <MenuItem value='author'>Author</MenuItem>
-                <MenuItem value='editor'>Editor</MenuItem>
-                <MenuItem value='maintainer'>Maintainer</MenuItem>
-                <MenuItem value='subscriber'>Subscriber</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid> */}
-          {/* <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Status</InputLabel>
-              <Select label='Status' defaultValue='active'>
-                <MenuItem value='active'>Active</MenuItem>
-                <MenuItem value='inactive'>Inactive</MenuItem>
-                <MenuItem value='pending'>Pending</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid> */}
-          {/* <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Company' placeholder='ABC Pvt. Ltd.' defaultValue='ABC Pvt. Ltd.' />
-          </Grid> */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type='number'
+              onChange={handleChange('banheiros')}
+              label='Banheiros'
+              placeholder='Banheiros'
+              value={values.banheiros}
+              required
+            />
+          </Grid>
+          
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type='number'
+              onChange={handleChange('VagasGaragem')}
+              label='Vagas de Garagem'
+              placeholder='Vagas de Garagem'
+              value={values.vagasGaragem}
+              required
+            />
+          </Grid>
 
-          {/* {openAlert ? (
-            <Grid item xs={12} sx={{ mb: 3 }}>
-              <Alert
-                severity='warning'
-                sx={{ '& a': { fontWeight: 400 } }}
-                action={
-                  <IconButton size='small' color='inherit' aria-label='close' onClick={() => setOpenAlert(false)}>
-                    <Close fontSize='inherit' />
-                  </IconButton>
-                }
-              >
-                <AlertTitle>Your email is not confirmed. Please check your inbox.</AlertTitle>
-                <Link href='/' onClick={e => e.preventDefault()}>
-                  Resend Confirmation
-                </Link>
-              </Alert>
-            </Grid>
-          ) : null} */}
-
+          <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center'}}>
+              <Box>
+                <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
+                  Adicionar Nova Foto
+                  <input
+                    hidden
+                    type='file'
+                    onChange={onChange}
+                    accept='image/png, image/jpeg'
+                    id='account-settings-upload-image'
+                  />
+                </ButtonStyled>
+                <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgSrc('/images/misc/triangle-dark.png')}>
+                  Deletar Fotos
+                </ResetButtonStyled>
+                <Typography variant='body2' sx={{ marginTop: 5 }}>
+                  Allowed PNG or JPEG. Max size of 800K.
+                </Typography>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <ImgStyled src={imgSrc} alt='Profile Pic' />
+              </Box>
+            </Box>
+          </Grid>
+          
           <Grid item xs={12} spacing={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box>
               <Button onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
-                Salvar Alterações
+                Adicionar
               </Button>
               <Button type='cancel' variant='outlined' color='error'>
                 Cancelar
               </Button>
             </Box>
-
-            <Box>
-              <Button variant='contained' color='error'>
-                Excluir Conta
-              </Button>
-            </Box>
           </Grid>
         </Grid>
-      </form>
     </CardContent>
   )
 }
 
-export default TabAccount
+export default AdicionarImovel

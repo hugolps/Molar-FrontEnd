@@ -13,6 +13,7 @@ export const AuthProvider = ({children}) => {
     const [auth, setAuth] = useState(Cookies.get('Authorization'))
     const [userAuth, setUserAuth] = useState(Cookies.get('Usuario'))
     const [addressAuth, setAddressAuth] = useState(Cookies.get('Endereco'))
+    const [imovelId, setImovelId] = useState()
 
     const isAuthenticated = false
     // const auth = Cookies.get('Authorization')
@@ -92,7 +93,9 @@ export const AuthProvider = ({children}) => {
             addressAuth,
             userAuth,
             setAuth,
-            logout
+            logout,
+            imovelId,
+            setImovelId
             }}>
             {children}
         </AuthContext.Provider>
