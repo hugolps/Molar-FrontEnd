@@ -27,82 +27,6 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
   fontSize: '.7rem',
 }))
 
-
-
-// const imoveis = [
-//   {
-//     id: 1,
-//     valor: 100000,
-//     tipoImovel: 'quitinete',
-//     bairro: 'Bessa',
-//     area: 32,
-//     quartos: 1,
-//     banheiros: 1,
-//     vagasGaragem: 0,
-//   },
-//   {
-//     id: 2,
-//     valor: 450000,
-//     tipoImovel: 'apartamento',
-//     bairro: 'Manaíra',
-//     area: 92,
-//     quartos: 3,
-//     banheiros: 2,
-//     vagasGaragem: 2,
-//   },
-//   {
-//     id: 3,
-//     valor: 900000,
-//     tipoImovel: 'casa',
-//     bairro: 'Jardim Luna',
-//     area: 150,
-//     quartos: 4,
-//     banheiros: 4,
-//     vagasGaragem: 4,
-//   },
-//   {
-//     id: 4,
-//     valor: 2000000,
-//     tipoImovel: 'cobertura',
-//     bairro: 'Intermares',
-//     area: 120,
-//     quartos: 3,
-//     banheiros: 4,
-//     vagasGaragem: 3,
-//   },
-//   {
-//     id: 5,
-//     valor: 350000,
-//     tipoImovel: 'apartamento',
-//     bairro: 'Bessa',
-//     area: 100,
-//     quartos: 2,
-//     banheiros: 3,
-//     vagasGaragem: 2,
-//   },
-//   {
-//     id: 6,
-//     valor: 1200000,
-//     tipoImovel: 'apartamento',
-//     bairro: 'Altiplano',
-//     area: 60,
-//     quartos: 4,
-//     banheiros: 5,
-//     vagasGaragem: 4,
-//   },
-//   {
-//     id: 7,
-//     valor: 250.000,
-//     tipoImovel: 'quitinete',
-//     bairro: 'bessa',
-//     area: 30,
-//     quartos: 1,
-//     banheiros: 1,
-//     vagasGaragem: 1,
-//   },
-
-// ]
-
 const statusObj = {
   applied: { color: 'info' },
   rejected: { color: 'error' },
@@ -142,7 +66,7 @@ const ImoveisTable = () => {
 
   const handleEdit = (id) => {
     setImovelId(id)
-    router.push('/editImoveis')
+    router.push(`/editImoveis/${id}`)
   }
 
   const handleDelete = (id) => {
@@ -175,7 +99,7 @@ const ImoveisTable = () => {
               <TableCell>Tipo do Imóvel</TableCell>
               <TableCell>Valor</TableCell>
               <TableCell>Bairro</TableCell>
-              <TableCell>Área</TableCell>
+              <TableCell>Área (m²)</TableCell>
               <TableCell>Quartos</TableCell>
               <TableCell>Banheiros</TableCell>
               <TableCell>Vagas Garagem</TableCell>
@@ -192,7 +116,7 @@ const ImoveisTable = () => {
                     {/* <Typography variant='caption'>{row.designation}</Typography> */}
                   </Box>
                 </TableCell>
-                <TableCell>{imovel.preco}</TableCell>
+                <TableCell>R$ {imovel.preco.toFixed(2)}</TableCell>
                 <TableCell>{imovel.bairro}</TableCell>
                 <TableCell>{imovel.area}</TableCell>
                 <TableCell>{imovel.numeroQuartos}</TableCell>

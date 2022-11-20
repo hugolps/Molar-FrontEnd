@@ -13,6 +13,7 @@ import TextField from '@mui/material/TextField'
 import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import { ConsoleNetworkOutline } from 'mdi-material-ui'
 
 // ** Icons Imports
 
@@ -46,6 +47,8 @@ const AdicionarImovel = () => {
   const [imgSrc, setImgSrc] = useState('/images/misc/triangle-dark.png')
 
   const router = useRouter()
+  const parametro = router.query.id
+  console.log(parametro)
 
   const {
     userInfo,
@@ -70,16 +73,31 @@ const AdicionarImovel = () => {
    const userUpdate = JSON.parse(userAuth)
 
   const [values, setValues] = useState({
-    titulo: 'Apartamento no Bessa',
-    preco: 100000,
-    tipoImovel: 'casa',
-    bairro: 'bessa',
-    area: 92,
-    quartos: 3,
-    banheiros: 2,
-    vagasGaragem: 2,
-
+    id: 0,
+    preco: 0,
+    tipoImovel: undefined,
+    bairro: undefined,
+    area: undefined,
+    numeroQuartos: undefined,
+    numeroBanheiros: undefined,
+    numeroVagasGaragem: undefined,
+    usuario_id: 0
   })
+
+  useEffect(() => {
+    if (parametro){
+      fetch(`http://localhost:8080/imoveis-desejados/${parametro}`)
+      .then(response => {
+          if(response.status === 200) {
+            return response.json()
+          }
+        })
+      .then(data => setValues(data))
+      .catch((error) => {
+        console.log('Algo deu errado!', error)
+      })
+    }
+  }, [parametro])
 
   console.log('Values: ', values)
 
@@ -108,32 +126,24 @@ const AdicionarImovel = () => {
 
   const handleEdit = () => {
     event.preventDefault()
-    console.log(addressAuth)
 
     const updateValues = {
-      usuario: {
-        id: user.id,
-        email: values.email.trim(),
-        nome: values.nome.trim(),
-        telefone: onlyNumbers(values.telefone.trim()),
-        cpf: onlyNumbers(values.cpf.trim()),
-        endereco_attributes: {
-            id: address.id,
-            usuario_id: user.id,
-            logradouro: values.logradouro.trim(),
-            bairro: values.bairro.trim(),
-            numero_residencia: onlyNumbers(values.numero.trim()),
-            cep: onlyNumbers(values.cep.trim())
-        }
-      }
+      id: values.id,
+      tipoImovel: values.tipoImovel.trim(),
+      preco: values.preco,
+      bairro: values.bairro.trim(),
+      area: values.area,
+      numeroQuartos: values.numeroQuartos,
+      numeroBanheiros: values.numeroBanheiros,
+      numeroVagasGaragem: values.numeroVagasGaragem,
+      usuario_id: values.usuario_id
     }
 
-    fetch(`http://localhost:3000/api/v1/usuarios/${user.id}`, {
+    fetch(`http://localhost:8080/imoveis-desejados/${values.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        'Authorization': `Bearer ${JSON.parse(auth)}`
       },
       body: JSON.stringify(updateValues)
     })
@@ -142,15 +152,15 @@ const AdicionarImovel = () => {
           response.json()
           }
         })
-      .then(data => setUserInfo({
-        usuario: updateValues.usuario,
-        Authorization: userInfo.Authorization
-      }))
+      // .then(data => setUserInfo({
+      //   usuario: updateValues.usuario,
+      //   Authorization: userInfo.Authorization
+      // }))
+      .then(data => console.log(data))
       .catch((error) => {
         console.log('Algo deu errado!', error)
       })
   }
-
 
   return (
 
@@ -160,12 +170,12 @@ const AdicionarImovel = () => {
             <TextField
               fullWidth
               type='number'
-              onChange={event => handleChange('preco')}
+              onChange={handleChange('preco')}
               label='Preço (R$)'
               placeholder='Preço'
               value={values.preco}
               required
-               />
+              />
           </Grid>
 
           <Grid item xs={12} sm={6}>
@@ -209,10 +219,10 @@ const AdicionarImovel = () => {
             <TextField
               fullWidth
               type='number'
-              onChange={handleChange('quartos')}
+              onChange={handleChange('numeroQuartos')}
               label='Número de Quartos'
               placeholder='Número de Quartos'
-              value={values.quartos}
+              value={values.numeroQuartos}
               required
             />
           </Grid>
@@ -221,10 +231,10 @@ const AdicionarImovel = () => {
             <TextField
               fullWidth
               type='number'
-              onChange={handleChange('banheiros')}
+              onChange={handleChange('numeroBanheiros')}
               label='Banheiros'
               placeholder='Banheiros'
-              value={values.banheiros}
+              value={values.numeroBanheiros}
               required
             />
           </Grid>
@@ -233,10 +243,10 @@ const AdicionarImovel = () => {
             <TextField
               fullWidth
               type='number'
-              onChange={handleChange('VagasGaragem')}
+              onChange={handleChange('numeroVagasGaragem')}
               label='Vagas de Garagem'
               placeholder='Vagas de Garagem'
-              value={values.vagasGaragem}
+              value={values.numeroVagasGaragem}
               required
             />
           </Grid>
