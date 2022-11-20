@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from 'src/contexts/AuthContext'
 import { useRouter } from 'next/router'
 
@@ -21,109 +21,30 @@ import CardActions from '@mui/material/CardActions'
 import ChevronUp from 'mdi-material-ui/ChevronUp'
 import ChevronDown from 'mdi-material-ui/ChevronDown'
 
-const imoveis = [
-    {
-      id: 1,
-      usuario_id: 3,
-      titulo: "Apartamento nos Bancarios",
-      tipoImovel: 'apartamento',
-      bairro: "Bancarios",
-      area: 100,
-      numeroQuartos: 3,
-      numeroBanheiros: 2,
-      numeroVagasGaragem: 1,
-      preco: 160000,
-      fotos: '/images/avatars/1.png',
-    },
-    {
-      id: 2,
-      usuario_id: 3,
-      titulo: "Apartamento em Manaíra",
-      preco: 450000,
-      tipoImovel: 'apartamento',
-      bairro: 'Manaíra',
-      area: 92,
-      numeroQuartos: 3,
-      numeroBanheiros: 2,
-      numeroVagasGaragem: 2,
-      fotos: '/images/avatars/2.png',
-    },
-    {
-      id: 3,
-      usuario_id: 3,
-      titulo: "Casa no Jardim Luna",
-      preco: 900000,
-      tipoImovel: 'casa',
-      bairro: 'Jardim Luna',
-      area: 150,
-      numeroQuartos: 4,
-      numeroBanheiros: 4,
-      numeroVagasGaragem: 4,
-      fotos: '/images/avatars/3.png',
-    },
-    {
-      id: 4,
-      usuario_id: 3,
-      titulo: "Cobertura em Intermares",
-      preco: 2000000,
-      tipoImovel: 'cobertura',
-      bairro: 'Intermares',
-      area: 120,
-      numeroQuartos: 3,
-      numeroBanheiros: 4,
-      numeroVagasGaragem: 3,
-      fotos: '/images/avatars/4.png',
-      usuario_id: 2
-    },
-    {
-      id: 5,
-      usuario_id: 3,
-      titulo: "Apartamento no Bessa",
-      preco: 350000,
-      tipoImovel: 'apartamento',
-      bairro: 'Bessa',
-      area: 100,
-      numeroQuartos: 2,
-      numeroBanheiros: 3,
-      numeroVagasGaragem: 2,
-      fotos: '/images/avatars/5.png',
-    },
-    {
-      id: 6,
-      usuario_id: 3,
-      titulo: "Apartamento no Altiplano",
-      preco: 1200000,
-      tipoImovel: 'apartamento',
-      bairro: 'Altiplano',
-      area: 60,
-      numeroQuartos: 4,
-      numeroBanheiros: 5,
-      numeroVagasGaragem: 4,
-      fotos: '/images/avatars/6.png',
-    },
-    {
-      id: 7,
-      usuario_id: 3,
-      titulo: "Quitinete no Bessa",
-      preco: 250.000,
-      tipoImovel: 'quitinete',
-      bairro: 'bessa',
-      area: 30,
-      numeroQuartos: 1,
-      numeroBanheiros: 1,
-      numeroVagasGaragem: 1,
-      fotos: '/images/avatars/7.png',
-    },
-    
-  ]
-
 const CardWithCollapse = () => {
   // ** State
   const [collapse, setCollapse] = useState({})
 
   const {imovelId, setImovelId} = useContext(AuthContext)
+  const { userAuth } = useContext(AuthContext)
+  const [imoveis, setImoveis] = useState([])
 
   const router = useRouter()
+
+  useEffect(() => {
+    if (userAuth){
+      fetch(`http://localhost:8080/imoveis-ofertados/usuario/${JSON.parse(userAuth).id}`, )
+      .then(response => {
+          if(response.status === 200) {
+            return response.json()
+          }
+        })
+      .then(data => setImoveis(data))
+      .catch((error) => {
+        console.log('Algo deu errado!', error)
+      })
+    }
+  }, [userAuth])
 
   const handleClick = (id) => {
     setCollapse((prevState => ({...prevState, [id]: !prevState[id]})))

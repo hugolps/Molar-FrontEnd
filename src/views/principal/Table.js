@@ -38,7 +38,7 @@ const statusObj = {
 const ImoveisTable = () => {
 
   const { userAuth } = useContext(AuthContext)
-  const [imoveis, setImoveis] = useState([]);
+  const [imoveis, setImoveis] = useState([])
 
   const {
     imovelId,
