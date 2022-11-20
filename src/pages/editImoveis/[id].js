@@ -84,6 +84,18 @@ const AdicionarImovel = () => {
     usuario_id: 0
   })
 
+  const isFormValid = (values) => {
+    return (values.preco &&
+            values.tipoImovel &&
+            values.bairro &&
+            values.area &&
+            values.numeroQuartos &&
+            values.numeroBanheiros &&
+            values.numeroBanheiros &&
+            values.numeroVagasGaragem
+            )
+  }
+
   useEffect(() => {
     if (parametro){
       fetch(`http://localhost:8080/imoveis-desejados/${parametro}`)
@@ -253,7 +265,7 @@ const AdicionarImovel = () => {
 
           <Grid item xs={12} spacing={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box>
-              <Button onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
+              <Button disabled={!isFormValid(values)} onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
                 Confirmar
               </Button>
               <Button onClick={handleCancel} type='cancel' variant='outlined' color='error'>

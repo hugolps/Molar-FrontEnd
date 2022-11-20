@@ -62,13 +62,13 @@ const AdicionarImovel = () => {
     userAuth,
     imovelId,
     setImovelId
-   } = useContext(AuthContext)
+  } = useContext(AuthContext)
 
-   console.log('Values: ', values)
-   console.log('ImovelId: ', imovelId)
+  console.log('Values: ', values)
+  console.log('ImovelId: ', imovelId)
 
-   const addressUpdate = JSON.parse(addressAuth)
-   const userUpdate = JSON.parse(userAuth)
+  const addressUpdate = JSON.parse(addressAuth)
+  const userUpdate = JSON.parse(userAuth)
 
   const [values, setValues] = useState({
     id: 0,
@@ -80,8 +80,22 @@ const AdicionarImovel = () => {
     numeroQuartos: undefined,
     numeroBanheiros: undefined,
     numeroVagasGaragem: undefined,
+    extras: undefined,
     usuario_id: 0
   })
+
+  const isFormValid = (values) => {
+    return (values.preco &&
+            values.tipoImovel &&
+            values.bairro &&
+            values.area &&
+            values.numeroQuartos &&
+            values.numeroBanheiros &&
+            values.numeroBanheiros &&
+            values.numeroVagasGaragem
+            )
+  }
+
 
   console.log('Values: ', values)
 
@@ -132,7 +146,8 @@ const AdicionarImovel = () => {
       numeroQuartos: values.numeroQuartos,
       numeroBanheiros: values.numeroBanheiros,
       numeroVagasGaragem: values.numeroVagasGaragem,
-      usuario_id: values.usuario_id
+      usuario_id: values.usuario_id,
+      extras: values.extras
     }
 
     fetch(`http://localhost:8080/imoveis-ofertados/${values.id}`, {
@@ -148,10 +163,6 @@ const AdicionarImovel = () => {
           response.json()
           }
         })
-      // .then(data => setUserInfo({
-      //   usuario: updateValues.usuario,
-      //   Authorization: userInfo.Authorization
-      // }))
       .then(data => router.push('/catalogo-imoveis'))
       .catch((error) => {
         console.log('Algo deu errado!', error)
@@ -172,7 +183,7 @@ const AdicionarImovel = () => {
               placeholder='Título do Anúncio'
               value={values.titulo}
               required
-               />
+              />
           </Grid>
 
           <Grid item xs={12} sm={6}>
@@ -184,7 +195,7 @@ const AdicionarImovel = () => {
               placeholder='Preço'
               value={values.preco}
               required
-               />
+              />
           </Grid>
 
           <Grid item xs={12} sm={6}>
@@ -260,6 +271,20 @@ const AdicionarImovel = () => {
             />
           </Grid>
 
+          <Grid item xs={12} sm={12}>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              type='text'
+              onChange={handleChange('extras')}
+              aria-label='Extras'
+              placeholder='Insira aqui informações adicionais...'
+              value={values.extras}
+              required
+            />
+          </Grid>
+
           <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center'}}>
               <Box>
@@ -288,7 +313,7 @@ const AdicionarImovel = () => {
 
           <Grid item xs={12} spacing={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box>
-              <Button onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
+              <Button disabled={!isFormValid(values)} onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
                 Confirmar
               </Button>
               <Button onClick={handleCancel} type='cancel' variant='outlined' color='error'>
