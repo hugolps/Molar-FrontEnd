@@ -1,3 +1,6 @@
+import { useState, useContext, useEffect } from 'react'
+import { AuthContext } from 'src/contexts/AuthContext'
+
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -16,6 +19,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SendIcon from '@mui/icons-material/Send';
 import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+
 
 
 const ButtonStyled = styled(Button)(({ theme }) => ({
@@ -181,6 +186,20 @@ const statusObj = {
 }
 
 const ImoveisTable = () => {
+
+  const {
+    imovelId,
+    setImovelId
+   } = useContext(AuthContext)
+
+  const router = useRouter()
+
+
+  const handleEdit = (id) => {
+    setImovelId(id)
+    router.push('/editImoveis')
+  }
+
   return (
     <Card>
       <TableContainer>
@@ -221,7 +240,7 @@ const ImoveisTable = () => {
                 <TableCell>
                 <Grid item xs={6} spacing={6} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <IconButton variant="outlined" color="primary">
-                      <EditIcon />
+                      <EditIcon onClick={() => handleEdit(imovel.id)}/>
                     </IconButton>
                     <IconButton variant="outlined" color="error">
                       <DeleteIcon />
