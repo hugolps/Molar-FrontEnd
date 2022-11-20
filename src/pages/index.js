@@ -42,15 +42,15 @@ const TabName = styled('span')(({ theme }) => ({
 }))
 
 const Dashboard = () => {
-    // ** State
-    const [value, setValue] = useState('meus-imoveis')
+  // ** State
+  const [value, setValue] = useState('meus-imoveis')
 
-    const router = useRouter()
-
+  const router = useRouter()
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
 
   return (
     <Card>

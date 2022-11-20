@@ -27,156 +27,6 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
   fontSize: '.7rem',
 }))
 
-
-const rows = [
-  {
-    age: 27,
-    status: 'current',
-    date: '09/27/2018',
-    name: 'Sally Quinn',
-    salary: '$19586.23',
-    email: 'eebsworth2m@sbwire.com',
-    designation: 'Human Resources Assistant'
-  },
-  {
-    age: 61,
-    date: '09/23/2016',
-    salary: '$23896.35',
-    status: 'professional',
-    name: 'Margaret Bowers',
-    email: 'kocrevy0@thetimes.co.uk',
-    designation: 'Nuclear Power Engineer'
-  },
-  {
-    age: 59,
-    date: '10/15/2017',
-    name: 'Minnie Roy',
-    status: 'rejected',
-    salary: '$18991.67',
-    email: 'ediehn6@163.com',
-    designation: 'Environmental Specialist'
-  },
-  {
-    age: 30,
-    date: '06/12/2018',
-    status: 'resigned',
-    salary: '$19252.12',
-    name: 'Ralph Leonard',
-    email: 'dfalloona@ifeng.com',
-    designation: 'Sales Representative'
-  },
-  {
-    age: 66,
-    status: 'applied',
-    date: '03/24/2018',
-    salary: '$13076.28',
-    name: 'Annie Martin',
-    designation: 'Operator',
-    email: 'sganderton2@tuttocitta.it'
-  },
-  {
-    age: 33,
-    date: '08/25/2017',
-    salary: '$10909.52',
-    name: 'Adeline Day',
-    status: 'professional',
-    email: 'hnisius4@gnu.org',
-    designation: 'Senior Cost Accountant'
-  },
-  {
-    age: 61,
-    status: 'current',
-    date: '06/01/2017',
-    salary: '$17803.80',
-    name: 'Lora Jackson',
-    designation: 'Geologist',
-    email: 'ghoneywood5@narod.ru'
-  },
-  {
-    age: 22,
-    date: '12/03/2017',
-    salary: '$12336.17',
-    name: 'Rodney Sharp',
-    status: 'professional',
-    designation: 'Cost Accountant',
-    email: 'dcrossman3@google.co.jp'
-  }
-]
-
-const imoveis = [
-  {
-    id: 1,
-    valor: 100000,
-    tipoImovel: 'quitinete',
-    bairro: 'Bessa',
-    area: 32,
-    quartos: 1,
-    banheiros: 1,
-    vagasGaragem: 0,
-  },
-  {
-    id: 2,
-    valor: 450000,
-    tipoImovel: 'apartamento',
-    bairro: 'Manaíra',
-    area: 92,
-    quartos: 3,
-    banheiros: 2,
-    vagasGaragem: 2,
-  },
-  {
-    id: 3,
-    valor: 900000,
-    tipoImovel: 'casa',
-    bairro: 'Jardim Luna',
-    area: 150,
-    quartos: 4,
-    banheiros: 4,
-    vagasGaragem: 4,
-  },
-  {
-    id: 4,
-    valor: 2000000,
-    tipoImovel: 'cobertura',
-    bairro: 'Intermares',
-    area: 120,
-    quartos: 3,
-    banheiros: 4,
-    vagasGaragem: 3,
-  },
-  {
-    id: 5,
-    valor: 350000,
-    tipoImovel: 'apartamento',
-    bairro: 'Bessa',
-    area: 100,
-    quartos: 2,
-    banheiros: 3,
-    vagasGaragem: 2,
-  },
-  {
-    id: 6,
-    valor: 1200000,
-    tipoImovel: 'apartamento',
-    bairro: 'Altiplano',
-    area: 60,
-    quartos: 4,
-    banheiros: 5,
-    vagasGaragem: 4,
-  },
-  {
-    id: 7,
-    valor: 250.000,
-    tipoImovel: 'quitinete',
-    bairro: 'bessa',
-    area: 30,
-    quartos: 1,
-    banheiros: 1,
-    vagasGaragem: 1,
-  },
-
-]
-
 const statusObj = {
   applied: { color: 'info' },
   rejected: { color: 'error' },
@@ -187,6 +37,9 @@ const statusObj = {
 
 const ImoveisTable = () => {
 
+  const { userAuth } = useContext(AuthContext)
+  const [imoveis, setImoveis] = useState([])
+
   const {
     imovelId,
     setImovelId
@@ -195,9 +48,46 @@ const ImoveisTable = () => {
   const router = useRouter()
 
 
+  useEffect(() => {
+    if (userAuth){
+      fetch(`http://localhost:8080/imoveis-desejados/usuario/${JSON.parse(userAuth).id}`, )
+      .then(response => {
+          if(response.status === 200) {
+            return response.json()
+          }
+        })
+      .then(data => setImoveis(data))
+      .catch((error) => {
+        console.log('Algo deu errado!', error)
+      })
+    }
+  }, [userAuth])
+
+
   const handleEdit = (id) => {
     setImovelId(id)
-    router.push('/editImoveis')
+    router.push(`/editImoveis/${id}`)
+  }
+
+  const handleDelete = (id) => {
+    if (userAuth){
+      fetch(`http://localhost:8080/imoveis-desejados/${id}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+          if(response.status === 200) {
+            return response.json()
+          }
+        })
+      .then(data => {
+        const index = imoveis.findIndex((obj) => obj.id === id)
+        const arr = [...imoveis]
+        setImoveis(arr.filter(obj => obj.id !== id))
+      })
+      .catch((error) => {
+        console.log('Algo deu errado!', error)
+      })
+    }
   }
 
   return (
@@ -209,7 +99,7 @@ const ImoveisTable = () => {
               <TableCell>Tipo do Imóvel</TableCell>
               <TableCell>Valor</TableCell>
               <TableCell>Bairro</TableCell>
-              <TableCell>Área</TableCell>
+              <TableCell>Área (m²)</TableCell>
               <TableCell>Quartos</TableCell>
               <TableCell>Banheiros</TableCell>
               <TableCell>Vagas Garagem</TableCell>
@@ -226,12 +116,12 @@ const ImoveisTable = () => {
                     {/* <Typography variant='caption'>{row.designation}</Typography> */}
                   </Box>
                 </TableCell>
-                <TableCell>{imovel.valor}</TableCell>
+                <TableCell>R$ {imovel.preco.toFixed(2)}</TableCell>
                 <TableCell>{imovel.bairro}</TableCell>
                 <TableCell>{imovel.area}</TableCell>
-                <TableCell>{imovel.quartos}</TableCell>
-                <TableCell>{imovel.banheiros}</TableCell>
-                <TableCell>{imovel.vagasGaragem}</TableCell>
+                <TableCell>{imovel.numeroQuartos}</TableCell>
+                <TableCell>{imovel.numeroBanheiros}</TableCell>
+                <TableCell>{imovel.numeroVagasGaragem}</TableCell>
                 <TableCell>
                   <ButtonStyled size="small" variant="contained" color="primary" disabled>
                     Matches
@@ -242,7 +132,7 @@ const ImoveisTable = () => {
                     <IconButton variant="outlined" color="primary">
                       <EditIcon onClick={() => handleEdit(imovel.id)}/>
                     </IconButton>
-                    <IconButton variant="outlined" color="error">
+                    <IconButton variant="outlined" color="error" onClick={() => handleDelete(imovel.id)}>
                       <DeleteIcon />
                     </IconButton>
                   </Grid>

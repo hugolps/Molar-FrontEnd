@@ -44,8 +44,9 @@ const AdicionarImovel = () => {
   // ** States
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/misc/triangle-dark.png')
-  
+
   const router = useRouter()
+  const parametro = router.query.id
 
   const {
     userInfo,
@@ -54,39 +55,51 @@ const AdicionarImovel = () => {
     setUser,
     address,
     setAddress,
-    auth, 
+    auth,
     setAuth,
-    addressAuth, 
+    addressAuth,
     setAddressAuth,
     userAuth,
     imovelId,
     setImovelId
    } = useContext(AuthContext)
 
-//    console.log('Values: ', values)
-//    console.log('ImovelId: ', imovelId)
-  
+   console.log('Values: ', values)
+   console.log('ImovelId: ', imovelId)
+
    const addressUpdate = JSON.parse(addressAuth)
    const userUpdate = JSON.parse(userAuth)
 
   const [values, setValues] = useState({
-    titulo: 'Apartamento no Bessa',
-    preco: 100000,
-    tipoImovel: 'casa',
-    bairro: 'bessa',
-    area: 92,
-    quartos: 3,
-    banheiros: 2,
-    vagasGaragem: 2,
-    
+    id: 0,
+    titulo: undefined,
+    preco: 0,
+    tipoImovel: undefined,
+    bairro: undefined,
+    area: undefined,
+    numeroQuartos: undefined,
+    numeroBanheiros: undefined,
+    numeroVagasGaragem: undefined,
+    usuario_id: 0
   })
 
   console.log('Values: ', values)
 
 
   useEffect(() => {
-    console.log(Cookies.get('Usuário'))
-  },[])
+    if (parametro){
+      fetch(`http://localhost:8080/imoveis-ofertados/${parametro}`)
+      .then(response => {
+          if(response.status === 200) {
+            return response.json()
+          }
+        })
+      .then(data => setValues(data))
+      .catch((error) => {
+        console.log('Algo deu errado!', error)
+      })
+    }
+  }, [parametro])
 
   const onChange = file => {
     const reader = new FileReader()
@@ -108,32 +121,25 @@ const AdicionarImovel = () => {
 
   const handleEdit = () => {
     event.preventDefault()
-    console.log(addressAuth)
 
     const updateValues = {
-      usuario: {
-        id: user.id,
-        email: values.email.trim(),
-        nome: values.nome.trim(),
-        telefone: onlyNumbers(values.telefone.trim()),
-        cpf: onlyNumbers(values.cpf.trim()),
-        endereco_attributes: {
-            id: address.id,
-            usuario_id: user.id,
-            logradouro: values.logradouro.trim(),
-            bairro: values.bairro.trim(),
-            numero_residencia: onlyNumbers(values.numero.trim()),
-            cep: onlyNumbers(values.cep.trim())
-        }
-      }
+      id: values.id,
+      titulo: values.titulo.trim(),
+      tipoImovel: values.tipoImovel.trim(),
+      preco: values.preco,
+      bairro: values.bairro.trim(),
+      area: values.area,
+      numeroQuartos: values.numeroQuartos,
+      numeroBanheiros: values.numeroBanheiros,
+      numeroVagasGaragem: values.numeroVagasGaragem,
+      usuario_id: values.usuario_id
     }
 
-    fetch(`http://localhost:3000/api/v1/usuarios/${user.id}`, {
+    fetch(`http://localhost:8080/imoveis-ofertados/${values.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        'Authorization': `Bearer ${JSON.parse(auth)}`
       },
       body: JSON.stringify(updateValues)
     })
@@ -142,10 +148,11 @@ const AdicionarImovel = () => {
           response.json()
           }
         })
-      .then(data => setUserInfo({
-        usuario: updateValues.usuario,
-        Authorization: userInfo.Authorization
-      }))
+      // .then(data => setUserInfo({
+      //   usuario: updateValues.usuario,
+      //   Authorization: userInfo.Authorization
+      // }))
+      .then(data => router.push('/catalogo-imoveis'))
       .catch((error) => {
         console.log('Algo deu errado!', error)
       })
@@ -159,8 +166,20 @@ const AdicionarImovel = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
+              type='text'
+              onChange={handleChange('titulo')}
+              label='Título do Anúncio'
+              placeholder='Título do Anúncio'
+              value={values.titulo}
+              required
+               />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
               type='number'
-              onChange={event => handleChange('preco')}
+              onChange={handleChange('preco')}
               label='Preço (R$)'
               placeholder='Preço'
               value={values.preco}
@@ -177,7 +196,7 @@ const AdicionarImovel = () => {
               placeholder='Tipo do Imóvel'
               defaultValue=''
               value={values.tipoImovel}
-              required 
+              required
               />
           </Grid>
 
@@ -209,10 +228,10 @@ const AdicionarImovel = () => {
             <TextField
               fullWidth
               type='number'
-              onChange={handleChange('quartos')}
+              onChange={handleChange('numeroQuartos')}
               label='Número de Quartos'
               placeholder='Número de Quartos'
-              value={values.quartos}
+              value={values.numeroQuartos}
               required
             />
           </Grid>
@@ -221,26 +240,52 @@ const AdicionarImovel = () => {
             <TextField
               fullWidth
               type='number'
-              onChange={handleChange('banheiros')}
+              onChange={handleChange('numeroBanheiros')}
               label='Banheiros'
               placeholder='Banheiros'
-              value={values.banheiros}
+              value={values.numeroBanheiros}
               required
             />
           </Grid>
-          
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type='number'
-              onChange={handleChange('VagasGaragem')}
+              onChange={handleChange('numeroVagasGaragem')}
               label='Vagas de Garagem'
               placeholder='Vagas de Garagem'
-              value={values.vagasGaragem}
+              value={values.numeroVagasGaragem}
               required
             />
           </Grid>
-          
+
+          <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center'}}>
+              <Box>
+                <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
+                  Adicionar Nova Foto
+                  <input
+                    hidden
+                    type='file'
+                    onChange={onChange}
+                    accept='image/png, image/jpeg'
+                    id='account-settings-upload-image'
+                  />
+                </ButtonStyled>
+                <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgSrc('/images/misc/triangle-dark.png')}>
+                  Deletar Fotos
+                </ResetButtonStyled>
+                <Typography variant='body2' sx={{ marginTop: 5 }}>
+                  Allowed PNG or JPEG. Max size of 800K.
+                </Typography>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <ImgStyled src={imgSrc} alt='Profile Pic' />
+              </Box>
+            </Box>
+          </Grid>
+
           <Grid item xs={12} spacing={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box>
               <Button onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
