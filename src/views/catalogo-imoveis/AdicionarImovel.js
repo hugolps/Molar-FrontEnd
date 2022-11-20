@@ -12,6 +12,8 @@ import TextField from '@mui/material/TextField'
 import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+
 
 // ** Icons Imports
 
@@ -72,7 +74,20 @@ const AdicionarImovel = () => {
     numeroQuartos: undefined,
     numeroBanheiros: undefined,
     numeroVagasGaragem: undefined,
+    extras: undefined
   })
+
+  const isFormValid = (values) => {
+    return (values.preco &&
+            values.tipoImovel &&
+            values.bairro &&
+            values.area &&
+            values.numeroQuartos &&
+            values.numeroBanheiros &&
+            values.numeroBanheiros &&
+            values.numeroVagasGaragem
+            )
+  }
 
   console.log('Values: ', values)
 
@@ -107,6 +122,7 @@ const AdicionarImovel = () => {
       numeroBanheiros: values.numeroBanheiros,
       numeroVagasGaragem: values.numeroVagasGaragem,
       fotos: [],
+      extras: values.extras,
       usuario_id: JSON.parse(userAuth).id
     }
 
@@ -235,6 +251,21 @@ const AdicionarImovel = () => {
             />
           </Grid>
 
+          <Grid item xs={12} sm={12}>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              type='text'
+              onChange={handleChange('extras')}
+              aria-label='Extras'
+              placeholder='Insira aqui informações adicionais...'
+              value={values.extras}
+              required
+            />
+          </Grid>
+
+
           <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center'}}>
               <Box>
@@ -263,7 +294,7 @@ const AdicionarImovel = () => {
 
           <Grid item xs={12} spacing={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box>
-              <Button onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
+              <Button disabled={!isFormValid(values)} onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
                 Adicionar
               </Button>
               <Button type='cancel' variant='outlined' color='error'>

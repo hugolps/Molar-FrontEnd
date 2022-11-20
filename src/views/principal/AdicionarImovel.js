@@ -31,22 +31,34 @@ const AdicionarImovel = () => {
     addressAuth,
     setAddressAuth,
     userAuth
-   } = useContext(AuthContext)
+  } = useContext(AuthContext)
 
-   console.log('Values: ', values)
+  console.log('Values: ', values)
 
-   const addressUpdate = JSON.parse(addressAuth)
-   const userUpdate = JSON.parse(userAuth)
+  const addressUpdate = JSON.parse(addressAuth)
+  const userUpdate = JSON.parse(userAuth)
 
-  const [values, setValues] = useState({
-    preco: 0,
-    tipoImovel: undefined,
-    bairro: undefined,
-    area: undefined,
-    numeroQuartos: undefined,
-    numeroBanheiros: undefined,
-    numeroVagasGaragem: undefined,
-  })
+    const [values, setValues] = useState({
+      preco: 0,
+      tipoImovel: undefined,
+      bairro: undefined,
+      area: undefined,
+      numeroQuartos: undefined,
+      numeroBanheiros: undefined,
+      numeroVagasGaragem: undefined,
+    })
+
+    const isFormValid = (values) => {
+      return (values.preco &&
+              values.tipoImovel &&
+              values.bairro &&
+              values.area &&
+              values.numeroQuartos &&
+              values.numeroBanheiros &&
+              values.numeroBanheiros &&
+              values.numeroVagasGaragem
+              )
+    }
 
   console.log('Values: ', values)
 
@@ -120,7 +132,7 @@ const AdicionarImovel = () => {
               placeholder='Valor'
               defaultValue={''}
               required
-               />
+              />
           </Grid>
 
           <Grid item xs={12} sm={6}>
@@ -198,7 +210,7 @@ const AdicionarImovel = () => {
 
           <Grid item xs={12} spacing={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box>
-              <Button onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
+              <Button disabled={!isFormValid(values)} onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
                 Adicionar
               </Button>
               <Button type='cancel' variant='outlined' color='error'>
