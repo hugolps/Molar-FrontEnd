@@ -70,7 +70,6 @@ const AdicionarImovel = () => {
 
   const handleEdit = () => {
     event.preventDefault()
-    console.log(addressAuth)
 
     const updateValues = {
       tipoImovel: values.tipoImovel.trim(),
