@@ -55,6 +55,27 @@ const CardWithCollapse = () => {
     router.push('/catalogo-imoveis/edit')
   }
 
+  const handleDelete = (id) => {
+    if (userAuth){
+      fetch(`http://localhost:8080/imoveis-ofertados/${id}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+          if(response.status === 200) {
+            return response.json()
+          }
+        })
+      .then(data => {
+        const index = imoveis.findIndex((obj) => obj.id === id)
+        const arr = [...imoveis]
+        setImoveis(arr.filter(obj => obj.id !== id))
+      })
+      .catch((error) => {
+        console.log('Algo deu errado!', error)
+      })
+    }
+  }
+
   return (
 
     <Grid container spacing={6}>
@@ -111,7 +132,7 @@ const CardWithCollapse = () => {
               <Button onClick={() => handleEdit(imovel.id)} size="small" variant='contained' sx={{ marginRight: 3.5 }}>
                 Editar
               </Button>
-              <Button size="small" type='cancel' variant='outlined' color='error'>
+              <Button size="small" type='cancel' variant='outlined' color='error' onClick={() => handleDelete(imovel.id)}>
                 Excluir Imovel
               </Button>
             </Box>
