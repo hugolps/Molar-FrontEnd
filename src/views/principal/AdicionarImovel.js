@@ -26,27 +26,26 @@ const AdicionarImovel = () => {
     setUser,
     address,
     setAddress,
-    auth, 
+    auth,
     setAuth,
-    addressAuth, 
+    addressAuth,
     setAddressAuth,
     userAuth
    } = useContext(AuthContext)
 
    console.log('Values: ', values)
-  
+
    const addressUpdate = JSON.parse(addressAuth)
    const userUpdate = JSON.parse(userAuth)
 
   const [values, setValues] = useState({
-    valor: 100.000,
-    tipoImovel: 'casa',
-    bairro: 'bessa',
-    area: 92,
-    quartos: 3,
-    banheiros: 2,
-    vagasGaragem: 2,
-    
+    preco: 0,
+    tipoImovel: undefined,
+    bairro: undefined,
+    area: undefined,
+    numeroQuartos: undefined,
+    numeroBanheiros: undefined,
+    numeroVagasGaragem: undefined,
   })
 
   console.log('Values: ', values)
@@ -74,29 +73,21 @@ const AdicionarImovel = () => {
     console.log(addressAuth)
 
     const updateValues = {
-      usuario: {
-        id: user.id,
-        email: values.email.trim(),
-        nome: values.nome.trim(),
-        telefone: onlyNumbers(values.telefone.trim()),
-        cpf: onlyNumbers(values.cpf.trim()),
-        endereco_attributes: {
-            id: address.id,
-            usuario_id: user.id,
-            logradouro: values.logradouro.trim(),
-            bairro: values.bairro.trim(),
-            numero_residencia: onlyNumbers(values.numero.trim()),
-            cep: onlyNumbers(values.cep.trim())
-        }
-      }
+      tipoImovel: values.tipoImovel.trim(),
+      preco: values.preco.trim(),
+      bairro: values.bairro.trim(),
+      area: values.area.trim(),
+      numeroQuartos: values.numeroQuartos.trim(),
+      numeroBanheiros: values.numeroBanheiros.trim(),
+      numeroVagasGaragem: values.numeroVagasGaragem.trim(),
+      usuario_id: JSON.parse(userAuth).id
     }
 
-    fetch(`http://localhost:3000/api/v1/usuarios/${user.id}`, {
-      method: 'PUT',
+    fetch(`http://localhost:8080/imoveis-desejados`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        'Authorization': `Bearer ${JSON.parse(auth)}`
       },
       body: JSON.stringify(updateValues)
     })
@@ -105,10 +96,11 @@ const AdicionarImovel = () => {
           response.json()
           }
         })
-      .then(data => setUserInfo({
-        usuario: updateValues.usuario,
-        Authorization: userInfo.Authorization
-      }))
+      // .then(data => setUserInfo({
+      //   usuario: updateValues.usuario,
+      //   Authorization: userInfo.Authorization
+      // }))
+      .then(data => console.log(data))
       .catch((error) => {
         console.log('Algo deu errado!', error)
       })
@@ -123,7 +115,8 @@ const AdicionarImovel = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              onChange={event => handleChange('valor')}
+              type='number'
+              onChange={handleChange('preco')}
               label='Valor (R$)'
               placeholder='Valor'
               defaultValue={''}
@@ -140,7 +133,7 @@ const AdicionarImovel = () => {
               placeholder='Tipo do Imóvel'
               defaultValue=''
               value={values.tipoImovel}
-              required 
+              required
               />
           </Grid>
 
@@ -172,7 +165,7 @@ const AdicionarImovel = () => {
             <TextField
               fullWidth
               type='number'
-              onChange={handleChange('quartos')}
+              onChange={handleChange('numeroQuartos')}
               label='Número de Quartos'
               placeholder='Número de Quartos'
               value={values.quartos}
@@ -184,26 +177,26 @@ const AdicionarImovel = () => {
             <TextField
               fullWidth
               type='number'
-              onChange={handleChange('banheiros')}
+              onChange={handleChange('numeroBanheiros')}
               label='Banheiros'
               placeholder='Banheiros'
               value={values.banheiros}
               required
             />
           </Grid>
-          
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type='number'
-              onChange={handleChange('VagasGaragem')}
+              onChange={handleChange('numeroVagasGaragem')}
               label='Vagas de Garagem'
               placeholder='Vagas de Garagem'
               value={values.vagasGaragem}
               required
             />
           </Grid>
-          
+
           <Grid item xs={12} spacing={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box>
               <Button onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>

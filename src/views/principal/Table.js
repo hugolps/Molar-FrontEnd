@@ -145,6 +145,27 @@ const ImoveisTable = () => {
     router.push('/editImoveis')
   }
 
+  const handleDelete = (id) => {
+    if (userAuth){
+      fetch(`http://localhost:8080/imoveis-desejados/${id}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+          if(response.status === 200) {
+            return response.json()
+          }
+        })
+      .then(data => {
+        const index = imoveis.findIndex((obj) => obj.id === id)
+        const arr = [...imoveis]
+        setImoveis(arr.filter(obj => obj.id !== id))
+      })
+      .catch((error) => {
+        console.log('Algo deu errado!', error)
+      })
+    }
+  }
+
   return (
     <Card>
       <TableContainer>
@@ -187,7 +208,7 @@ const ImoveisTable = () => {
                     <IconButton variant="outlined" color="primary">
                       <EditIcon onClick={() => handleEdit(imovel.id)}/>
                     </IconButton>
-                    <IconButton variant="outlined" color="error">
+                    <IconButton variant="outlined" color="error" onClick={() => handleDelete(imovel.id)}>
                       <DeleteIcon />
                     </IconButton>
                   </Grid>
