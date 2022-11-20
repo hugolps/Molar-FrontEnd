@@ -14,7 +14,7 @@ import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 export const navigation = () => {
   return [
     {
-      title: 'Principal',
+      title: 'Meus Imoveis',
       icon: HomeOutline,
       path: '/'
     },
@@ -24,11 +24,11 @@ export const navigation = () => {
       path: '/account-settings'
     },
 
-    // {
-    //   title: 'WishList',
-    //   icon: CubeOutline,
-    //   path: '/form-layouts'
-    // },
+    {
+      title: 'Catálogo Imoveis ',
+      icon: CubeOutline,
+      path: '/catalogo-imoveis'
+    },
     {
       title: 'Login',
       icon: Login,
@@ -36,12 +36,12 @@ export const navigation = () => {
       //openInNewTab: true
     },
 
-    {
-      title: 'Logout',
-      icon: Logout,
-      path: '/pages/login',
-      openInNewTab: true
-    }
+    // {
+    //   title: 'Logout',
+    //   icon: Logout,
+    //   path: '/pages/login',
+    //   openInNewTab: true
+    // }
 
     // {
     //   sectionTitle: 'Pages'

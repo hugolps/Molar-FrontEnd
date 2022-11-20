@@ -11,12 +11,13 @@ import { styled } from '@mui/material/styles'
 import MuiTab from '@mui/material/Tab'
 
 // ** Icons Imports
-import AccountOutline from 'mdi-material-ui/AccountOutline'
-import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 // ** Demo Tabs Imports
-import TabAccount from 'src/views/account-settings/TabAccount'
-import TabSecurity from 'src/views/account-settings/TabSecurity'
+import TabInfo from 'src/views/catalogo-imoveis/MeusImoveis'
+import AdicionarImovel from 'src/views/catalogo-imoveis/AdicionarImovel'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -39,9 +40,9 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const AccountSettings = () => {
-  // ** State
-  const [value, setValue] = useState('account')
+const Dashboard = () => {
+    // ** State
+    const [value, setValue] = useState('meus-imoveis')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -52,38 +53,38 @@ const AccountSettings = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label='account-settings tabs'
+          aria-label='principal tabs'
           sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value='account'
+            value='meus-imoveis'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center'}}>
-                <AccountOutline />
-                <TabName>Conta</TabName>
+                <HomeWorkOutlinedIcon />
+                <TabName>Meus Imoveis</TabName>
               </Box>
             }
           />
           <Tab
-            value='security'
+            value='adicionar-imoveis'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <LockOpenOutline />
-                <TabName>Senha</TabName>
+                <AddOutlinedIcon />
+                <TabName>Adicionar Imóvel</TabName>
               </Box>
             }
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='account'>
-          <TabAccount />
+        <TabPanel sx={{ p: 0 }} value='meus-imoveis'>
+          <TabInfo />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='security'>
-          <TabSecurity />
+        <TabPanel sx={{ p: 0 }} value='adicionar-imoveis'>
+          <AdicionarImovel />
         </TabPanel>
       </TabContext>
     </Card>
   )
 }
 
-export default AccountSettings
+export default Dashboard
