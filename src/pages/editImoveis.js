@@ -44,7 +44,7 @@ const AdicionarImovel = () => {
   // ** States
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/misc/triangle-dark.png')
-  
+
   const router = useRouter()
 
   const {
@@ -54,9 +54,9 @@ const AdicionarImovel = () => {
     setUser,
     address,
     setAddress,
-    auth, 
+    auth,
     setAuth,
-    addressAuth, 
+    addressAuth,
     setAddressAuth,
     userAuth,
     imovelId,
@@ -65,7 +65,7 @@ const AdicionarImovel = () => {
 
 //    console.log('Values: ', values)
 //    console.log('ImovelId: ', imovelId)
-  
+
    const addressUpdate = JSON.parse(addressAuth)
    const userUpdate = JSON.parse(userAuth)
 
@@ -78,7 +78,7 @@ const AdicionarImovel = () => {
     quartos: 3,
     banheiros: 2,
     vagasGaragem: 2,
-    
+
   })
 
   console.log('Values: ', values)
@@ -103,7 +103,7 @@ const AdicionarImovel = () => {
 
   const handleCancel = (id) => {
     setImovelId(id)
-    router.push('/catalogo-imoveis')
+    router.push('/')
   }
 
   const handleEdit = () => {
@@ -177,7 +177,7 @@ const AdicionarImovel = () => {
               placeholder='Tipo do Imóvel'
               defaultValue=''
               value={values.tipoImovel}
-              required 
+              required
               />
           </Grid>
 
@@ -228,7 +228,7 @@ const AdicionarImovel = () => {
               required
             />
           </Grid>
-          
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -240,7 +240,7 @@ const AdicionarImovel = () => {
               required
             />
           </Grid>
-          
+
           <Grid item xs={12} spacing={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box>
               <Button onClick={handleEdit} variant='contained' sx={{ marginRight: 3.5 }}>
