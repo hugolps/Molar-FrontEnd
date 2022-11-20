@@ -169,7 +169,7 @@ const imoveis = [
     banheiros: 1,
     vagasGaragem: 1,
   },
-  
+
 ]
 
 const statusObj = {
@@ -214,7 +214,7 @@ const ImoveisTable = () => {
                 <TableCell>{imovel.banheiros}</TableCell>
                 <TableCell>{imovel.vagasGaragem}</TableCell>
                 <TableCell>
-                  <ButtonStyled size="small" variant="contained" color="primary">
+                  <ButtonStyled size="small" variant="contained" color="primary" disabled>
                     Matches
                   </ButtonStyled>
                 </TableCell>
