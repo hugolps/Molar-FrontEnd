@@ -52,7 +52,7 @@ const CardWithCollapse = () => {
 
   const handleEdit = (id) => {
     setImovelId(id)
-    router.push('/catalogo-imoveis/edit')
+    router.push(`/catalogo-imoveis/edit/${id}`)
   }
 
   const handleDelete = (id) => {

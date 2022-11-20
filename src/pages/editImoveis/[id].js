@@ -156,7 +156,7 @@ const AdicionarImovel = () => {
       //   usuario: updateValues.usuario,
       //   Authorization: userInfo.Authorization
       // }))
-      .then(data => console.log(data))
+      .then(data => router.push('/'))
       .catch((error) => {
         console.log('Algo deu errado!', error)
       })
