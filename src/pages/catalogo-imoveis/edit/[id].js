@@ -64,12 +64,6 @@ const AdicionarImovel = () => {
     setImovelId
   } = useContext(AuthContext)
 
-  console.log('Values: ', values)
-  console.log('ImovelId: ', imovelId)
-
-  const addressUpdate = JSON.parse(addressAuth)
-  const userUpdate = JSON.parse(userAuth)
-
   const [values, setValues] = useState({
     id: 0,
     titulo: undefined,

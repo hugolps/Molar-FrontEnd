@@ -35,9 +35,6 @@ const AdicionarImovel = () => {
 
   console.log('Values: ', values)
 
-  const addressUpdate = JSON.parse(addressAuth)
-  const userUpdate = JSON.parse(userAuth)
-
     const [values, setValues] = useState({
       preco: 0,
       tipoImovel: undefined,
