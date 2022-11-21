@@ -1,7 +1,9 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, forwardRef } from 'react'
 import { AuthContext } from 'src/contexts/AuthContext'
 import Cookies from 'js-cookie'
 import {isFormValid, onlyNumbers, validate} from 'src/validation/index.js'
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -13,11 +15,17 @@ import Button from '@mui/material/Button'
 
 // ** Icons Imports
 
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const AdicionarImovel = () => {
   // ** States
-  const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
+
+  const [openAlert, setOpenAlert] = useState(false)
+  const [messageAlert, setMessageAlert] = useState('')
+  const [severity, setSeverity] = useState('')
 
   const {
     userInfo,
@@ -101,22 +109,40 @@ const AdicionarImovel = () => {
     })
       .then(response => {
           if(response.status === 200) {
-          response.json()
+          return response.json()
           }
+
+          return Promise.reject(response)
         })
       // .then(data => setUserInfo({
       //   usuario: updateValues.usuario,
       //   Authorization: userInfo.Authorization
       // }))
-      .then(data => console.log(data))
+      .then(data => {
+        setOpenAlert(true)
+        setMessageAlert('Imóvel cadastrado com sucesso!')
+        setSeverity('primary')
+      })
       .catch((error) => {
         console.log('Algo deu errado!', error)
+        setOpenAlert(true)
+        setMessageAlert('ERRO: Imóvel não cadastrado. Tente novamente!')
+        setSeverity('error')
       })
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
 
 
   return (
 
+  <>
   <CardContent>
 
         <Grid container spacing={7}>
@@ -217,6 +243,12 @@ const AdicionarImovel = () => {
           </Grid>
         </Grid>
     </CardContent>
+    <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleClose}>
+    <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+    {messageAlert}
+    </Alert>
+    </Snackbar>
+    </>
   )
 }
 

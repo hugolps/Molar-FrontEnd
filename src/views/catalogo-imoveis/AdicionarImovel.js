@@ -169,12 +169,12 @@ const AdicionarImovel = () => {
       })
   }
 
-    const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
 
-    setOpenAlert(false);
+  setOpenAlert(false);
   };
 
 
