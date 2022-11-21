@@ -79,7 +79,7 @@ const CardWithCollapse = () => {
   return (
 
     <Grid container spacing={6}>
-    {imoveis.map(imovel => (
+    {imoveis?.map(imovel => (
         <Grid key={imovel.id} item xs={12} sm={6} md={4} lg={4} xl={3} sx={{ paddingBottom: 4 }}>
         <Card key={imovel.id} sx={{ marginBottom: 5, marginTop: 5 }}>
         <CardMedia sx={{ height: '14.5625rem' }} image={imovel.fotos} />

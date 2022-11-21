@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from 'src/contexts/AuthContext'
 import Cookies from 'js-cookie'
 import {isFormValid, onlyNumbers, validate} from 'src/validation/index.js'
+import CustomizedSnackbars from '../../alerts/alert'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -43,7 +44,9 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 
 const AdicionarImovel = () => {
   // ** States
-  const [openAlert, setOpenAlert] = useState(true)
+  const [openAlert, setOpenAlert] = useState(false)
+  const [messageAlert, setMessageAlert] = useState('')
+  const [severity, setSeverity] = useState('')
   const [imgSrc, setImgSrc] = useState('/images/misc/triangle-dark.png')
 
   const {
@@ -74,7 +77,12 @@ const AdicionarImovel = () => {
     numeroQuartos: undefined,
     numeroBanheiros: undefined,
     numeroVagasGaragem: undefined,
-    extras: undefined
+    extras: undefined,
+    // fotos: [{
+    //   data: undefined,
+    //   nome: undefined,
+    //   tipo: undefined
+    // }]
   })
 
   const isFormValid = (values) => {
@@ -86,6 +94,8 @@ const AdicionarImovel = () => {
             values.numeroBanheiros &&
             values.numeroBanheiros &&
             values.numeroVagasGaragem
+            // values.fotos.lenght > 0
+
             )
   }
 
@@ -100,8 +110,10 @@ const AdicionarImovel = () => {
     const reader = new FileReader()
     const { files } = file.target
     if (files && files.length !== 0) {
+      console.log('UEPA', reader.result)
       reader.onload = () => setImgSrc(reader.result)
       reader.readAsDataURL(files[0])
+      console.log('EITA', imgSrc)
     }
   }
 
@@ -121,7 +133,7 @@ const AdicionarImovel = () => {
       numeroQuartos: values.numeroQuartos,
       numeroBanheiros: values.numeroBanheiros,
       numeroVagasGaragem: values.numeroVagasGaragem,
-      fotos: [],
+      // fotos: [{data: new Blob([imgSrc], {type: 'image/png'})}],
       extras: values.extras,
       usuario_id: JSON.parse(userAuth).id
     }
@@ -136,22 +148,28 @@ const AdicionarImovel = () => {
     })
       .then(response => {
           if(response.status === 200) {
-          response.json()
+          return response.json()
           }
+
+          return Promise.reject(response)
         })
-      // .then(data => setUserInfo({
-      //   usuario: updateValues.usuario,
-      //   Authorization: userInfo.Authorization
-      // }))
-      .then(data => console.log(data))
+      .then(data => {
+        setOpenAlert(true)
+        setMessageAlert('Imóvel cadastrado com sucesso!')
+        setSeverity('success')
+      })
       .catch((error) => {
         console.log('Algo deu errado!', error)
+        setOpenAlert(true)
+        setMessageAlert('ERRO: Imóvel não cadastrado. Tente novamente!')
+        setSeverity('error')
       })
   }
 
 
   return (
-
+  
+  <>
   <CardContent>
         <Grid container spacing={7}>
           <Grid item xs={12} sm={6}>
@@ -277,6 +295,7 @@ const AdicionarImovel = () => {
                     onChange={onChange}
                     accept='image/png, image/jpeg'
                     id='account-settings-upload-image'
+                    multiple
                   />
                 </ButtonStyled>
                 <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgSrc('/images/misc/triangle-dark.png')}>
@@ -304,6 +323,8 @@ const AdicionarImovel = () => {
           </Grid>
         </Grid>
     </CardContent>
+    <CustomizedSnackbars severity={severity} message={messageAlert} open={openAlert}/>
+    </>
   )
 }
 

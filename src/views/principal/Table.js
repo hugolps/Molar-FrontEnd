@@ -27,13 +27,6 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
   fontSize: '.7rem',
 }))
 
-const statusObj = {
-  applied: { color: 'info' },
-  rejected: { color: 'error' },
-  current: { color: 'primary' },
-  resigned: { color: 'warning' },
-  professional: { color: 'success' }
-}
 
 const ImoveisTable = () => {
 
@@ -47,9 +40,11 @@ const ImoveisTable = () => {
 
   const router = useRouter()
 
+  console.log('Mizera de ERROOOOO', userAuth)
 
   useEffect(() => {
-    if (userAuth){
+    if (userAuth && userAuth !== {} && userAuth !== undefined){
+      console.log('Erro bucetaaaaa')
       fetch(`http://localhost:8080/imoveis-desejados/usuario/${JSON.parse(userAuth).id}`, )
       .then(response => {
           if(response.status === 200) {
@@ -62,6 +57,8 @@ const ImoveisTable = () => {
       })
     }
   }, [userAuth])
+
+  console.log('Mizera de ERROOOOO', userAuth)
 
 
   const handleEdit = (id) => {
@@ -108,7 +105,7 @@ const ImoveisTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {imoveis.map(imovel => (
+            {imoveis?.map(imovel => (
               <TableRow hover key={imovel.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
