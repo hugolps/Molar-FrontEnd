@@ -1,8 +1,10 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, forwardRef } from 'react'
 import { AuthContext } from 'src/contexts/AuthContext'
 import Cookies from 'js-cookie'
 import {isFormValid, onlyNumbers, validate} from 'src/validation/index.js'
 import CustomizedSnackbars from '../../alerts/alert'
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -41,6 +43,10 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
     marginTop: theme.spacing(4)
   }
 }))
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const AdicionarImovel = () => {
   // ** States
@@ -153,19 +159,27 @@ const AdicionarImovel = () => {
       .then(data => {
         setOpenAlert(true)
         setMessageAlert('Imóvel cadastrado com sucesso!')
-        setSeverity('success')
+        setSeverity('primary')
       })
       .catch((error) => {
-        console.log('Algo deu errado!', error)
+        console.log('Algo deu errado!', error.json())
         setOpenAlert(true)
         setMessageAlert('ERRO: Imóvel não cadastrado. Tente novamente!')
         setSeverity('error')
       })
   }
 
+    const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
+
 
   return (
-  
+
   <>
   <CardContent>
         <Grid container spacing={7}>
@@ -320,7 +334,11 @@ const AdicionarImovel = () => {
           </Grid>
         </Grid>
     </CardContent>
-    <CustomizedSnackbars severity={severity} message={messageAlert} open={openAlert}/>
+    <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+        {messageAlert}
+        </Alert>
+      </Snackbar>
     </>
   )
 }
