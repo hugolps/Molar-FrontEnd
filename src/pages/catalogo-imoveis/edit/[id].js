@@ -90,10 +90,6 @@ const AdicionarImovel = () => {
             )
   }
 
-
-  console.log('Values: ', values)
-
-
   useEffect(() => {
     if (parametro){
       fetch(`http://localhost:8080/imoveis-ofertados/${parametro}`)
