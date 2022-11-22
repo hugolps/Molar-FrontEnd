@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, forwardRef } from 'react'
 import { AuthContext } from 'src/contexts/AuthContext'
 
 // ** MUI Imports
@@ -20,6 +20,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import SendIcon from '@mui/icons-material/Send';
 import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/router'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
 
 
 
@@ -28,8 +34,12 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
 }))
 
 
-const ImoveisTable = () => {
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
+const ImoveisTable = () => {
+  const [openDialog, setOpenDialog] = useState(false);
   const { userAuth } = useContext(AuthContext)
   const [imoveis, setImoveis] = useState([])
 
@@ -39,8 +49,6 @@ const ImoveisTable = () => {
    } = useContext(AuthContext)
 
   const router = useRouter()
-
-  console.log('Mizera de ERROOOOO', userAuth)
 
   useEffect(() => {
     if (userAuth && userAuth !== {} && userAuth !== undefined){
@@ -57,9 +65,6 @@ const ImoveisTable = () => {
       })
     }
   }, [userAuth])
-
-  console.log('Mizera de ERROOOOO', userAuth)
-
 
   const handleEdit = (id) => {
     setImovelId(id)
@@ -80,6 +85,7 @@ const ImoveisTable = () => {
         const index = imoveis.findIndex((obj) => obj.id === id)
         const arr = [...imoveis]
         setImoveis(arr.filter(obj => obj.id !== id))
+        setOpenDialog(false);
       })
       .catch((error) => {
         console.log('Algo deu errado!', error)
@@ -87,7 +93,16 @@ const ImoveisTable = () => {
     }
   }
 
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+
   return (
+    <>
     <Card>
       <TableContainer>
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
@@ -129,10 +144,33 @@ const ImoveisTable = () => {
                     <IconButton variant="outlined" color="primary">
                       <EditIcon onClick={() => handleEdit(imovel.id)}/>
                     </IconButton>
-                    <IconButton variant="outlined" color="error" onClick={() => handleDelete(imovel.id)}>
+                    <IconButton variant="outlined" color="error" onClick={handleClickOpen}>
                       <DeleteIcon />
+
                     </IconButton>
                   </Grid>
+                  <Dialog
+                    open={openDialog}
+                    onClose={handleClose}
+                    TransitionComponent={Transition}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"Deseja mesmo excluir imóvel?"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        {/* Deseja mesmo excluir imóvel? */}
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose}>Não</Button>
+                      <Button onClick={() => handleDelete(imovel.id)} autoFocus>
+                        Sim
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </TableCell>
                 {/* <TableCell>
                   <Chip
@@ -152,6 +190,8 @@ const ImoveisTable = () => {
         </Table>
       </TableContainer>
     </Card>
+
+    </>
   )
 }
 
