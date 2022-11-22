@@ -37,6 +37,7 @@ const CardWithCollapse = () => {
   // ** State
   const [collapse, setCollapse] = useState({})
 
+  const [imovelID, setImovelID] = useState()
   const {imovelId, setImovelId} = useContext(AuthContext)
   const { userAuth } = useContext(AuthContext)
   const [imoveis, setImoveis] = useState([])
@@ -91,7 +92,8 @@ const CardWithCollapse = () => {
     }
   }
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id) => {
+    setImovelID(id)
     setOpenDialog(true);
   };
 
@@ -155,7 +157,7 @@ const CardWithCollapse = () => {
               <Button onClick={() => handleEdit(imovel.id)} size="small" variant='contained' sx={{ marginRight: 3.5 }}>
                 Editar
               </Button>
-              <Button size="small" type='cancel' variant='outlined' color='error' onClick={handleClickOpen}>
+              <Button size="small" type='cancel' variant='outlined' color='error' onClick={() => handleClickOpen(imovel.id)}>
                 Excluir Imovel
               </Button>
             </Box>
@@ -177,7 +179,7 @@ const CardWithCollapse = () => {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Não</Button>
-              <Button onClick={() => handleDelete(imovel.id)} autoFocus>
+              <Button onClick={() => handleDelete(imovelID)} autoFocus>
                 Sim
               </Button>
             </DialogActions>

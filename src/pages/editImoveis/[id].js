@@ -266,8 +266,8 @@ const AdicionarImovel = () => {
               fullWidth
               type='number'
               onChange={handleChange('area')}
-              label='Área (m2)'
-              placeholder='Área'
+              label='Área (m²)'
+              // placeholder='Área'
               value={values.area}
               required
             />

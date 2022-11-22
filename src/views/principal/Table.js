@@ -42,6 +42,7 @@ const ImoveisTable = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const { userAuth } = useContext(AuthContext)
   const [imoveis, setImoveis] = useState([])
+  const [imovelID, setImovelID] = useState()
 
   const {
     imovelId,
@@ -52,7 +53,7 @@ const ImoveisTable = () => {
 
   useEffect(() => {
     if (userAuth && userAuth !== {} && userAuth !== undefined){
-      console.log('Erro bucetaaaaa')
+
       fetch(`http://localhost:8080/imoveis-desejados/usuario/${JSON.parse(userAuth).id}`, )
       .then(response => {
           if(response.status === 200) {
@@ -93,7 +94,8 @@ const ImoveisTable = () => {
     }
   }
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id) => {
+    setImovelID(id)
     setOpenDialog(true);
   };
 
@@ -144,9 +146,8 @@ const ImoveisTable = () => {
                     <IconButton variant="outlined" color="primary">
                       <EditIcon onClick={() => handleEdit(imovel.id)}/>
                     </IconButton>
-                    <IconButton variant="outlined" color="error" onClick={handleClickOpen}>
+                    <IconButton variant="outlined" color="error" onClick={() => handleClickOpen(imovel.id)}>
                       <DeleteIcon />
-
                     </IconButton>
                   </Grid>
                   <Dialog
@@ -166,7 +167,7 @@ const ImoveisTable = () => {
                     </DialogContent>
                     <DialogActions>
                       <Button onClick={handleClose}>Não</Button>
-                      <Button onClick={() => handleDelete(imovel.id)} autoFocus>
+                      <Button onClick={() => handleDelete(imovelID)} autoFocus>
                         Sim
                       </Button>
                     </DialogActions>
