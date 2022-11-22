@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, forwardRef } from 'react'
 import { AuthContext } from 'src/contexts/AuthContext'
 import { useRouter } from 'next/router'
 
@@ -16,18 +16,33 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
 
 // ** Icons Imports
 import ChevronUp from 'mdi-material-ui/ChevronUp'
 import ChevronDown from 'mdi-material-ui/ChevronDown'
 
+
+
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const CardWithCollapse = () => {
   // ** State
   const [collapse, setCollapse] = useState({})
 
+  const [imovelID, setImovelID] = useState()
   const {imovelId, setImovelId} = useContext(AuthContext)
   const { userAuth } = useContext(AuthContext)
   const [imoveis, setImoveis] = useState([])
+
+  const [openDialog, setOpenDialog] = useState(false);
 
   const router = useRouter()
 
@@ -69,12 +84,22 @@ const CardWithCollapse = () => {
         const index = imoveis.findIndex((obj) => obj.id === id)
         const arr = [...imoveis]
         setImoveis(arr.filter(obj => obj.id !== id))
+        setOpenDialog(false);
       })
       .catch((error) => {
         console.log('Algo deu errado!', error)
       })
     }
   }
+
+  const handleClickOpen = (id) => {
+    setImovelID(id)
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
 
   return (
 
@@ -132,12 +157,33 @@ const CardWithCollapse = () => {
               <Button onClick={() => handleEdit(imovel.id)} size="small" variant='contained' sx={{ marginRight: 3.5 }}>
                 Editar
               </Button>
-              <Button size="small" type='cancel' variant='outlined' color='error' onClick={() => handleDelete(imovel.id)}>
+              <Button size="small" type='cancel' variant='outlined' color='error' onClick={() => handleClickOpen(imovel.id)}>
                 Excluir Imovel
               </Button>
             </Box>
           </Grid>
-
+          <Dialog
+            open={openDialog}
+            onClose={handleClose}
+            TransitionComponent={Transition}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Deseja mesmo excluir imóvel?"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                {/* Deseja mesmo excluir imóvel? */}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Não</Button>
+              <Button onClick={() => handleDelete(imovelID)} autoFocus>
+                Sim
+              </Button>
+            </DialogActions>
+          </Dialog>
             </CardContent>
         </Collapse>
         </Card>
