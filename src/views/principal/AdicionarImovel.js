@@ -180,6 +180,7 @@ const AdicionarImovel = () => {
               value={values.tipoImovel}
               onChange={handleChange('tipoImovel')}
               fullWidth
+              required
             >
               {tipoImoveis.map((option) => (
                 <MenuItem key={option.value} value={option.value}>

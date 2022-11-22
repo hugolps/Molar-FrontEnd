@@ -47,6 +47,14 @@ const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const tipoImoveis = [
+  {value: "", label: "Tipo do Imóvel"},
+  {value: "APARTAMENTO", label: "Apartamento"},
+  {value: "CASA", label: "Casa"},
+  {value: "KITNET", label: "Kitnet"}
+]
+
+
 const AdicionarImovel = () => {
   // ** States
   const [imgSrc, setImgSrc] = useState('/images/misc/triangle-dark.png')
@@ -57,6 +65,12 @@ const AdicionarImovel = () => {
 
   const router = useRouter()
   const parametro = router.query.id
+
+  const [tipoImovel, setTipoImovel] = useState('')
+
+  const handleChangeTipoImovel = (event) => {
+    setTipoImovel(event.target.value);
+  };
 
   const {
     userInfo,
@@ -107,7 +121,10 @@ const AdicionarImovel = () => {
             return response.json()
           }
         })
-      .then(data => setValues(data))
+      .then(data => {
+        setValues(data)
+        setTipoImovel(data.tipoImovel)
+      })
       .catch((error) => {
         console.log('Algo deu errado!', error)
       })
@@ -144,7 +161,7 @@ const AdicionarImovel = () => {
 
     const updateValues = {
       id: values.id,
-      tipoImovel: values.tipoImovel.trim(),
+      tipoImovel: tipoImovel.trim(),
       preco: values.preco,
       bairro: values.bairro.trim(),
       area: values.area,
@@ -215,16 +232,21 @@ const AdicionarImovel = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField
+          <TextField
+              id="outlined-select-tipo-imovel"
+              select
+              label="Tipo do Imóvel"
+              value={tipoImovel}
+              onChange={handleChangeTipoImovel}
               fullWidth
-              type='text'
-              onChange={handleChange('tipoImovel')}
-              label='Tipo do Imóvel'
-              placeholder='Tipo do Imóvel'
-              defaultValue=''
-              value={values.tipoImovel}
               required
-              />
+            >
+              {tipoImoveis.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>

@@ -48,6 +48,13 @@ const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const tipoImoveis = [
+  {value: "", label: "Tipo do Imóvel"},
+  {value: "APARTAMENTO", label: "Apartamento"},
+  {value: "CASA", label: "Casa"},
+  {value: "KITNET", label: "Kitnet"}
+]
+
 const AdicionarImovel = () => {
   // ** States
   const [openAlert, setOpenAlert] = useState(false)
@@ -113,10 +120,8 @@ const AdicionarImovel = () => {
     const reader = new FileReader()
     const { files } = file.target
     if (files && files.length !== 0) {
-      console.log('UEPA', reader.result)
       reader.onload = () => setImgSrc(reader.result)
       reader.readAsDataURL(files[0])
-      console.log('EITA', imgSrc)
     }
   }
 
@@ -208,16 +213,21 @@ const AdicionarImovel = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              type='text'
-              onChange={handleChange('tipoImovel')}
-              label='Tipo do Imóvel'
-              placeholder='Tipo do Imóvel'
-              defaultValue=''
+          <TextField
+              id="outlined-select-tipo-imovel"
+              select
+              label="Tipo do Imóvel"
               value={values.tipoImovel}
+              onChange={handleChange('tipoImovel')}
+              fullWidth
               required
-              />
+            >
+              {tipoImoveis.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>
