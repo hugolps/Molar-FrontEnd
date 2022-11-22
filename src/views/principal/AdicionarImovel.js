@@ -12,12 +12,22 @@ import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
 import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 
 // ** Icons Imports
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+const tipoImoveis = [
+  {value: "", label: "Tipo do Imóvel"},
+  {value: "APARTAMENTO", label: "Apartamento"},
+  {value: "CASA", label: "Casa"},
+  {value: "KITNET", label: "Kitnet"}
+
+]
 
 const AdicionarImovel = () => {
   // ** States
@@ -26,6 +36,10 @@ const AdicionarImovel = () => {
   const [openAlert, setOpenAlert] = useState(false)
   const [messageAlert, setMessageAlert] = useState('')
   const [severity, setSeverity] = useState('')
+
+  const [tipoImovel, setTipoImovel] = useState('')
+
+
 
   const {
     userInfo,
@@ -160,15 +174,19 @@ const AdicionarImovel = () => {
 
           <Grid item xs={12} sm={6}>
             <TextField
-              fullWidth
-              type='text'
-              onChange={handleChange('tipoImovel')}
-              label='Tipo do Imóvel'
-              placeholder='Tipo do Imóvel'
-              defaultValue=''
+              id="outlined-select-tipo-imovel"
+              select
+              label="Tipo do Imóvel"
               value={values.tipoImovel}
-              required
-              />
+              onChange={handleChange('tipoImovel')}
+              fullWidth
+            >
+              {tipoImoveis.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>
