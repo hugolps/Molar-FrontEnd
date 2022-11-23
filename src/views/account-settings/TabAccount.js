@@ -54,7 +54,6 @@ const TabAccount = () => {
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
 
-  //console.log('Enderecooo: ', addressAuth)
 
   const {
     userInfo,
@@ -69,9 +68,6 @@ const TabAccount = () => {
     setAddressAuth,
     userAuth
    } = useContext(AuthContext)
-
-  //  console.log('Enderecooo: ', JSON.parse(addressAuth))
-   console.log('Values: ', values)
   
    const addressUpdate = JSON.parse(addressAuth)
    const userUpdate = JSON.parse(userAuth)
@@ -87,7 +83,6 @@ const TabAccount = () => {
     cpf: userUpdate.cpf,
   })
 
-  console.log('Values: ', values)
 
 
   useEffect(() => {
@@ -105,12 +100,10 @@ const TabAccount = () => {
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
-    // console.log(event.target.value)
   }
 
   const handleEdit = () => {
     event.preventDefault()
-    console.log(addressAuth)
 
     const updateValues = {
       usuario: {

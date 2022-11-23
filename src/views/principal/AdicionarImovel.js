@@ -55,8 +55,6 @@ const AdicionarImovel = () => {
     userAuth
   } = useContext(AuthContext)
 
-  console.log('Values: ', values)
-
     const [values, setValues] = useState({
       preco: 0,
       tipoImovel: undefined,

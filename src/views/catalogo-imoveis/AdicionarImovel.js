@@ -76,7 +76,6 @@ const AdicionarImovel = () => {
     userAuth
    } = useContext(AuthContext)
 
-   console.log('Values: ', values)
 
   const [values, setValues] = useState({
     titulo: undefined,
@@ -108,8 +107,6 @@ const AdicionarImovel = () => {
 
             )
   }
-
-  console.log('Values: ', values)
 
 
   useEffect(() => {

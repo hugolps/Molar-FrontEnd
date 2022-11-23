@@ -40,7 +40,6 @@ export const AuthProvider = ({children}) => {
         setAddress(userInfo.endereco)
         setUser(userInfo.usuario)
         setAuthorization(userInfo.Authorization)
-        console.log('Auth: ', userInfo)
         } else{
           setAddress({})
           setUser({})
@@ -52,28 +51,20 @@ export const AuthProvider = ({children}) => {
       if (!auth || auth === "undefined" || auth === {}) {
 
             Cookies.set('Authorization', JSON.stringify(authorization))
-            console.log('Token: ', authorization)
           }
     },[authorization, auth])
 
     useEffect(() => {
         if (!userAuth || userAuth === "undefined" || userAuth === {}) {
             Cookies.set('Usuario', JSON.stringify(user))
-            console.log('Usuario', user)
           }
     },[user, userAuth])
 
     useEffect(() => {
         if (!addressAuth || addressAuth === "undefined" || addressAuth === {}) {
             Cookies.set('Endereco', JSON.stringify(address))
-            console.log('Endereco', address)
           }
     },[address, addressAuth])
-
-
-    // useEffect(() => {
-    //     console.log(user)
-    // },[user])
 
 
     return (

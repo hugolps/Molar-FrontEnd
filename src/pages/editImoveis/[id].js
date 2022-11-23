@@ -131,7 +131,6 @@ const AdicionarImovel = () => {
     }
   }, [parametro])
 
-  console.log('Values: ', values)
 
 
   useEffect(() => {

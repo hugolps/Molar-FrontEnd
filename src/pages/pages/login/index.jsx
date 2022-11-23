@@ -93,14 +93,11 @@ const LoginPage = () => {
     })
       .then(response => response.json())
       .then(data => setUserInfo(data))
-      .then(console.log(userInfo))
       .then(router.push('/'))
-      .then(console.log(userInfo))
 
   }
 
   const handleChange = prop => event => {
-    // console.log(values)
     setValues({ ...values, [prop]: event.target.value })
   }
 
