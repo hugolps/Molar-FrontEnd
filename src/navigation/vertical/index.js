@@ -16,7 +16,7 @@ export const navigation = () => {
     {
       title: 'Meus Imoveis',
       icon: HomeOutline,
-      path: '/'
+      path: '/imoveis-desejados'
     },
     {
       title: 'Usuário',
@@ -28,12 +28,6 @@ export const navigation = () => {
       title: 'Catálogo Imoveis ',
       icon: CubeOutline,
       path: '/catalogo-imoveis'
-    },
-    {
-      title: 'Login',
-      icon: Login,
-      path: '/pages/login',
-      //openInNewTab: true
     },
 
     // {

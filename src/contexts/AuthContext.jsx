@@ -30,7 +30,7 @@ export const AuthProvider = ({children}) => {
         setUserInfo({})
 
         if (!auth || auth === "undefined" || auth === {}) {
-            router.push('/pages/login')
+            router.push('/')
         }
 
     }

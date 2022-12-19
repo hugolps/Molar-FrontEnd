@@ -128,7 +128,7 @@ const RegisterPage = () => {
           }
         })
       .then(setUserInfo(registerValues))
-      .then(router.push('/pages/login'))
+      .then(router.push('/'))
       .catch((error) => {
         console.log('Algo deu errado!', error)
       })
