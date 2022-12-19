@@ -47,12 +47,12 @@ export const navigation = () => {
     //   sectionTitle: 'Pages'
     // },
 
-    {
-      title: 'Matches',
-      icon: AlertCircleOutline,
-      path: '/matches',
-      openInNewTab: true
-    },
+    // {
+    //   title: 'Matches',
+    //   icon: AlertCircleOutline,
+    //   path: '/matches',
+    //   openInNewTab: true
+    // },
     // {
     //   title: 'Error',
     //   icon: AlertCircleOutline,
