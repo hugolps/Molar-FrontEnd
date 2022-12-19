@@ -152,7 +152,7 @@ const AdicionarImovel = () => {
 
   const handleCancel = (id) => {
     setImovelId(id)
-    router.push('/')
+    router.push('/imoveis-desejados')
   }
 
   const handleEdit = () => {
@@ -195,7 +195,7 @@ const AdicionarImovel = () => {
         setSeverity('primary')
       })
       .then(data => {
-        setTimeout(() => router.push('/'), 3000)
+        setTimeout(() => router.push('/imoveis-desejados'), 3000)
       })
       .catch((error) => {
         console.log('Algo deu errado!', error)

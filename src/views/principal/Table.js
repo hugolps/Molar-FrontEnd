@@ -103,6 +103,10 @@ const ImoveisTable = () => {
     setOpenDialog(false);
   };
 
+  const handleMatches = (id) => {
+    router.push(`/matches/${id}`);
+  };
+
   return (
     <>
     <Card>
@@ -137,7 +141,7 @@ const ImoveisTable = () => {
                 <TableCell>{imovel.numeroBanheiros}</TableCell>
                 <TableCell>{imovel.numeroVagasGaragem}</TableCell>
                 <TableCell>
-                  <ButtonStyled size="small" variant="contained" color="primary" disabled>
+                  <ButtonStyled size="small" variant="contained" color="primary" disabled={!imovel.hasMatches} onClick={() => handleMatches(imovel.id)}>
                     Matches
                   </ButtonStyled>
                 </TableCell>

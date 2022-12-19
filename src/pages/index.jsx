@@ -93,7 +93,7 @@ const LoginPage = () => {
     })
       .then(response => response.json())
       .then(data => setUserInfo(data))
-      .then(router.push('/'))
+      .then(router.push('/imoveis-desejados'))
 
   }
 
@@ -192,7 +192,7 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'>Entre agora para encontrar os melhores imóveis</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={() => router.push('/')}>
+          <form noValidate autoComplete='off' onSubmit={() => router.push('/imoveis-desejados')}>
             <TextField
               autoFocus
               fullWidth
