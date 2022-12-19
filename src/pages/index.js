@@ -14,7 +14,6 @@ import MuiTab from '@mui/material/Tab'
 // ** Icons Imports
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 // ** Demo Tabs Imports
 import TabInfo from 'src/views/principal/MeusImoveis'
